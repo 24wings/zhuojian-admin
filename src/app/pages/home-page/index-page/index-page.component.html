@@ -1,0 +1,264 @@
+<nz-breadcrumb style="margin:12px 0;">
+  <nz-breadcrumb-item routerLink="/admin">统计分析</nz-breadcrumb-item>
+  <nz-breadcrumb-item>业务概览</nz-breadcrumb-item>
+</nz-breadcrumb>
+
+<div style="background: #ECECEC;padding:30px;">
+  <div style="background:#fff">
+    <div nz-row [nzGutter]="6" class="min-card">
+      <div nz-col [nzSpan]="6">
+        <nz-card>
+          <ng-template #title style="min-height:150px;">
+            <p>总销售额</p>
+
+
+
+          </ng-template>
+          <ng-template #body>
+            <h2>￥ 126,560</h2>
+            <p> 周同比 12%
+              <i class="anticon anticon-caret-up"></i>
+            </p>
+
+            <p> 日同比 12%
+              <i class="anticon anticon-caret-up"></i>
+            </p>
+            <p>
+              日均销售额￥12,423
+            </p>
+          </ng-template>
+        </nz-card>
+      </div>
+      <div nz-col [nzSpan]="6">
+        <nz-card>
+          <ng-template #title style="min-height:150px;">
+            <p>
+              <a class="gray"> 访问量 </a>8846</p>
+          </ng-template>
+          <ng-template #body>
+
+
+            <div id="mountNode"></div>
+            <h2 class="text-center">日访问量
+              <span class="gray"> 8846</span>
+            </h2>
+          </ng-template>
+        </nz-card>
+      </div>
+      <div nz-col [nzSpan]="6">
+        <nz-card>
+          <ng-template #title style="min-height:150px;">
+            <p>
+              <a class="gray"> 支付笔数 </a>
+            </p>
+          </ng-template>
+          <ng-template #body>
+            <h2>6560</h2>
+            <div id="bishu"></div>
+            <!-- <div></div> -->
+            <!-- <h2 class="text-center">支付笔数 -->
+            <!-- <span class="gray"> 6560</span> -->
+            <!-- </h2> -->
+          </ng-template>
+        </nz-card>
+      </div>
+
+      <div nz-col [nzSpan]="6">
+        <nz-card>
+          <ng-template #title style="min-height:150px;">
+            <p>
+              <a class="gray"> 识别成功率 </a>
+            </p>
+          </ng-template>
+          <ng-template #body>
+            <div style="">
+              <h2>78%</h2>
+
+              <nz-progress [ngModel]="50" [nzStatus]="'active'"></nz-progress>
+              <div style="display:flex">
+                <div style="flex:1">
+                  周同比 12%
+                </div>
+                <div style="flex:1">
+                  日环比 11%
+                </div>
+
+
+              </div>
+            </div>
+          </ng-template>
+        </nz-card>
+      </div>
+
+    </div>
+    <div nz-row [nzGutter]="6">
+      <div nz-col [nzSpan]="18">
+        <div>
+          <nz-tabset>
+
+            <nz-tab>
+              <div class="time-seg">
+                <span>今日</span>
+                <span>本周 </span>
+                <span>本月</span>
+                <span>全年</span>
+              </div>
+              <ng-template #nzTabHeading>
+                销售额
+
+              </ng-template>
+              <div id="bishu2" style="min-height:600px;max-width:1200px"></div>
+
+            </nz-tab>
+            <nz-tab (nzSelect)="initChart3()">
+              <ng-template #nzTabHeading>
+                访问量
+              </ng-template>
+              <div id="bishu3" style="min-height:600px;max-width:1200px"></div>
+            </nz-tab>
+          </nz-tabset>
+
+        </div>
+      </div>
+      <div nz-col [nzSpan]="6">
+        <nz-card>
+          <ng-template #title style="min-height:150px;">
+            <p>
+              <a class="gray"> 水果销售总排名 </a>
+            </p>
+          </ng-template>
+          <ng-template #body>
+            <ul class="sort">
+              <li *ngFor="let product of sorts ;let i = index">
+                <span>
+                  <nz-badge [nzCount]="i+1"> </nz-badge>
+                </span>
+                <span class="text">
+                  <span>{{product.name}}</span>
+                  <span class="num">{{product.count}}</span>
+                </span>
+              </li>
+
+
+
+            </ul>
+          </ng-template>
+        </nz-card>
+      </div>
+    </div>
+
+    <div nz-row [nzGutter]="6">
+      <div nz-col [nzSpan]="12">
+        <h2>热销水果</h2>
+        <hr>
+        <div nz-row [nzGutter]="12">
+          <div nz-col [nzSpan]="12">
+
+            <h2>周销售数量</h2>
+            <p class="gray text-center">
+              <span class="h2"> 8846</span> &nbsp;&nbsp;&nbsp;&nbsp; 17.1% </p>
+            <div id="week"></div>
+          </div>
+          <div nz-col [nzSpan]="12">
+            <h2>月销售数量</h2>
+            <p class="gray text-center">
+              <span class="h2"> 27000</span> &nbsp;&nbsp;&nbsp;&nbsp; 17.1% </p>
+            <div id="month"></div>
+          </div>
+        </div>
+        <nz-table #nzTable [nzDataSource]="data" [nzPageSize]="10">
+          <thead nz-thead>
+            <tr>
+              <th nz-th>
+                <span>排名</span>
+              </th>
+              <th nz-th>
+                <span>产品</span>
+              </th>
+              <th nz-th>
+                <span>销售量</span>
+              </th>
+              <th nz-th>
+                <span>周涨幅</span>
+              </th>
+            </tr>
+          </thead>
+          <tbody nz-tbody>
+            <tr nz-tbody-tr *ngFor="let data of nzTable.data">
+              <td nz-td>
+                <a>{{data.name}}</a>
+              </td>
+              <td nz-td>{{data.age}}</td>
+              <td nz-td>{{data.address}}</td>
+              <td nz-td>
+                <span>
+                  <!-- <a href="#">Action 一 {{data.name}}</a> -->
+                  <!-- <span nz-table-divider></span> -->
+                  <!-- <a href="#">Delete</a> -->
+                  <span nz-table-divider></span>
+                  <nz-dropdown>
+                    <a class="ant-dropdown-link" nz-dropdown>
+                      <!-- More actions -->
+                      <i class="anticon anticon-down"></i>
+                    </a>
+                    <!-- <ul nz-menu>
+                      <li nz-menu-item>
+                        <a target="_blank" rel="noopener noreferrer" href="http://www.alipay.com/">1st menu item</a>
+                      </li>
+                      <li nz-menu-item>
+                        <a target="_blank" rel="noopener noreferrer" href="http://www.alipay.com/">2nd menu item</a>
+                      </li>
+                      <li nz-menu-item>
+                        <a target="_blank" rel="noopener noreferrer" href="http://www.alipay.com/">3rd menu item</a>
+                      </li>
+                    </ul> -->
+                  </nz-dropdown>
+                </span>
+              </td>
+            </tr>
+          </tbody>
+        </nz-table>
+      </div>
+      <div nz-col [nzSpan]="12">
+        <div class="h2">营业额比例</div>
+        <nz-radio-group [(ngModel)]="mode">
+          <label nz-radio-button [nzValue]="'all'">
+            <span>全部水果</span>
+          </label>
+          <label nz-radio-button [nzValue]="'default'">
+            <span>西瓜</span>
+          </label>
+          <label nz-radio-button [nzValue]="'small'">
+            <span>苹果</span>
+          </label>
+          <label nz-radio-button [nzValue]="'small'">
+            <span>梨子</span>
+          </label>
+          <label nz-radio-button [nzValue]="'small'">
+            <span>香蕉</span>
+          </label>
+          <label nz-radio-button [nzValue]="'small'">
+            <span>冬瓜</span>
+          </label>
+        </nz-radio-group>
+
+        <div style="display:flex;">
+          <div style="flex:1">
+            <div id="circle"></div>
+          </div>
+          <div style="flex:1">
+            <li *ngFor="let item of circleData" style="    padding: 10px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            width: 200px;">
+              <span style="    border-right: 1px solid #e25151;
+              padding: 0 10px;"> {{item.item}}</span> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; {{item.count}}%</li>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+</div>

@@ -1,0 +1,139 @@
+<nz-breadcrumb style="margin:12px 0;">
+  <nz-breadcrumb-item routerLink="/admin">统计分析</nz-breadcrumb-item>
+  <nz-breadcrumb-item>今日订单</nz-breadcrumb-item>
+</nz-breadcrumb>
+
+<div style="margin-bottom:30px;">
+  <nz-card style="width:100%;" [nzBordered]="false">
+
+    <ng-template #extra>
+      <a>x</a>
+    </ng-template>
+
+    <ng-template #body>
+
+      <div nz-row>
+        <div nz-col [nzSpan]="8">
+          待确认发货 4 批
+        </div>
+        <div nz-col [nzSpan]="8">
+          今日发货次数 8
+        </div>
+        <div nz-col [nzSpan]="8">
+          本周发货数量 20 车
+        </div>
+      </div>
+
+    </ng-template>
+  </nz-card>
+</div>
+
+<nz-card style="width:100%;" [nzBordered]="false">
+
+  <ng-template #extra>
+    <a>x</a>
+  </ng-template>
+
+  <ng-template #body>
+
+    <div nz-row>
+      <div nz-col [nzSpan]="12">
+        今日订单
+      </div>
+      <div nz-col [nzSpan]="12">
+        <nz-radio-group [(ngModel)]="selectedOrderState">
+          <label nz-radio-button [nzValue]="" (click)="selectedOrderState=null;refershTodayOrders()">
+            <span>全部</span>
+          </label>
+          <label nz-radio-button [nzValue]="FruitOrderState.UnConfirm" (click)="selectedOrderState=FruitOrderState.UnConfirm;refershTodayOrders()">
+            <span>未确认</span>
+          </label>
+          <label nz-radio-button [nzValue]="FruitOrderState.SendProduct" (click)="selectedOrderState=FruitOrderState.SendProduct;refershTodayOrders()">
+            <span>未发货</span>
+          </label>
+          <label nz-radio-button [nzValue]="FruitOrderState.Finish" (click)="selectedOrderState=FruitOrderState.Finish;refershTodayOrders()">
+            <span>已发货</span>
+          </label>
+        </nz-radio-group>
+      </div>
+
+    </div>
+    <div nz-row>
+      <div style="margin-bottom: 16px;">
+        <button nz-button [disabled]="selectedOrderState!=FruitOrderState.SendProduct" [nzType]="'primary'" [nzLoading]="_operating"
+          (click)="_operateData()">确认发货</button>
+        <span style="margin-left: 8px;" *ngIf="_checkedNumber">选择 {{_checkedNumber}} 条</span>
+      </div>
+      <nz-table #nzTable [nzDataSource]="_dataSet" [nzPageSize]="pageSize" (nzDataChange)="_displayDataChange($event)" [(nzPageIndex)]="pageIndex"
+        (nzPageIndexChange)="_refreshStatus()" (nzPageSizeChange)="_refreshStatus($event)">
+        <thead nz-thead>
+          <tr>
+            <th nz-th nzCheckbox>
+              <label nz-checkbox [(ngModel)]="_allChecked" [nzIndeterminate]="_indeterminate" (ngModelChange)="_checkAll($event)">
+              </label>
+            </th>
+            <th>序号</th>
+            <th nz-th>
+              <span>日期</span>
+            </th>
+            <th>订单用户</th>
+            <th nz-th>
+              <span>产品</span>
+            </th>
+            <th nz-th>
+              <span>数量</span>
+            </th>
+            <th>状态</th>
+            <th>发货地址</th>
+
+            <th>配置</th>
+          </tr>
+        </thead>
+        <tbody nz-tbody>
+          <ng-container *ngFor="let order of todayOrders;let i = index;">
+            <tr nz-tbody-tr *ngIf="pageIndex *10-10 <= i && pageIndex *10  >i">
+              <td nz-td nzCheckbox>
+                <label nz-checkbox [(ngModel)]="order.checked" (ngModelChange)="_refreshStatus($event)">
+                </label>
+              </td>
+              <td nz-td>{{i}}</td>
+
+              <td nz-td>
+                {{order.createDt | date:'yyyy-MM-dd hh:mm'}}
+
+              </td>
+              <td>
+                <a>{{order.orderUser.nickname}}</a>
+              </td>
+
+              <td nz-td>{{order.product.name}}</td>
+              <td nz-td>{{order.num}}</td>
+              <td nz-td>
+                <span [ngSwitch]="order.state">
+                  <p *ngSwitchCase="FruitOrderState.UnConfirm">
+                    未确认
+                  </p>
+                  <p *ngSwitchCase="FruitOrderState.SendProduct">
+                    待发货
+                  </p>
+                  <p *ngSwitchCase="FruitOrderState.ReciveProduct">
+                    待收货
+                  </p>
+
+                  <p *ngSwitchDefault>
+                    已完结
+                  </p>
+                </span>
+              </td>
+              <td nz-td>{{order.address}}</td>
+              <td nz-td>
+                <a routerLink="/admin/order-detail" [queryParams]="{orderState:order.state}">详情</a>
+              </td>
+            </tr>
+          </ng-container>
+        </tbody>
+      </nz-table>
+    </div>
+
+  </ng-template>
+</nz-card>

@@ -1,0 +1,140 @@
+<nz-breadcrumb style="margin:12px 0;">
+  <nz-breadcrumb-item routerLink="/admin">优惠券</nz-breadcrumb-item>
+  <nz-breadcrumb-item>优惠券管理</nz-breadcrumb-item>
+</nz-breadcrumb>
+<div style="padding:30px;">
+  <div style="background:#fff">
+    <nz-card>
+      <ng-template #title>
+      </ng-template>
+      <ng-template #body>
+
+        <hr>
+        <button nz-button [nzType]="'primary'" [nzLoading]="_operating" (click)="createModalVisible=true">+ 新建</button>
+        <nz-dropdown>
+          <!-- <nz-input [(ngModel)]="keyword" [nzPlaceHolder]="'输入产品组名'" style="max-width:200px;"></nz-input> 选择日期 -->
+          <!-- <button nz-button [nzType]="'primary'">查询</button> -->
+          <!-- <button nz-button>重置</button> -->
+          <!-- 只显示推荐产品:
+              <nz-switch [(ngModel)]="showRecommand"></nz-switch> -->
+          <a class="ant-dropdown-link" nz-dropdown>
+            <button nz-button> 批量操作</button>
+            <i class="anticon anticon-down"></i>
+          </a>
+          <ul nz-menu>
+            <li nz-menu-item>
+              <a rel="noopener noreferrer" (click)="deleteReductions()">删除选中</a>
+            </li>
+            <!-- <li nz-menu-item> -->
+            <!-- <a target="_blank" rel="noopener noreferrer" href="http://www.alipay.com/">2nd menu item</a> -->
+            <!-- </li> -->
+            <!-- <li nz-menu-item> -->
+            <!-- <a target="_blank" rel="noopener noreferrer" href="http://www.alipay.com/">3rd menu item</a> -->
+            <!-- </li> -->
+          </ul>
+        </nz-dropdown>
+        <nz-table #nzTable [nzDataSource]="reductions" [nzPageSize]="10" (nzDataChange)="_displayDataChange($event)" (nzPageIndexChange)="_refreshStatus()"
+          (nzPageSizeChange)="_refreshStatus()">
+          <thead nz-thead>
+            <tr>
+              <th nz-th nzCheckbox>
+                <label nz-checkbox [(ngModel)]="_allChecked" [nzIndeterminate]="_indeterminate" (ngModelChange)="_checkAll($event)">
+                </label>
+              </th>
+              <th nz-th>
+                <span>优惠券</span>
+              </th>
+              <th nz-th>减免</th>
+
+              <th nz-th>所有用户拥有</th>
+              <th nz-th>
+                <span>状态</span>
+              </th>
+              <th nz-th>
+                <span>创建时间</span>
+              </th>
+              <th nz-th>
+                <span>操作</span>
+              </th>
+            </tr>
+          </thead>
+          <tbody nz-tbody>
+            <tr nz-tbody-tr *ngFor="let data of nzTable.data">
+              <td nz-td nzCheckbox>
+                <label nz-checkbox [(ngModel)]="data.checked" (ngModelChange)="_refreshStatus($event)">
+                </label>
+              </td>
+              <td nz-td>{{data.title}}</td>
+
+              <td nz-td>{{data.value}}元</td>
+
+              <td nz-td>
+                <nz-switch [(ngModel)]="data.everyUser" [nzDisabled]="true">
+                  <span checked>拥有</span>
+                  <span unchecked>未拥有</span>
+                </nz-switch>
+              </td>
+              <td nz-td>{{data.active ?'启用':'禁用' }}</td>
+              <td nz-td>{{data.createDt | date:'yyyy-MM-dd hh:mm'}}</td>
+              <td nz-td>
+                <a (click)="activeReduction(data._id)">启用</a>
+                <a (click)="unactiveReduction(data._id)">禁用</a>
+                <a (click)="selectedReduction=data;modifyModalVisible=true">编辑</a>
+              </td>
+            </tr>
+          </tbody>
+        </nz-table>
+
+      </ng-template>
+    </nz-card>
+  </div>
+</div>
+
+<!-- 添加产品 -->
+<nz-modal [nzVisible]="createModalVisible" [nzTitle]="'添加产品'" [nzContent]="modalContent" (nzOnCancel)="createModalVisible=false;"
+  (nzOnOk)="createModalVisible=false;createReduction($event);">
+  <ng-template #modalContent>
+    <div class="field">
+      <label class="label"> 消费券标题</label>
+      <nz-input [(ngModel)]="newReduction.title"></nz-input>
+    </div>
+
+    <div class="field">
+      <label class="label"> 减免</label>
+      <nz-input [(ngModel)]="newReduction.value" [nzType]="'number'"></nz-input>
+    </div>
+
+    <div class="field">
+      <label for="">所有用户都拥有</label>
+      <nz-switch [(ngModel)]="newReduction.everyUser"></nz-switch>
+
+    </div>
+
+  </ng-template>
+</nz-modal>
+
+
+
+<!-- 编辑产品  -->
+<ng-container *ngIf="!!selectedReduction">
+  <nz-modal [nzVisible]="modifyModalVisible" [nzTitle]="'添加产品'" [nzContent]="modalContent" (nzOnCancel)="modifyModalVisible=false;"
+    (nzOnOk)="modifyModalVisible=false;modifyReduction($event)">
+    <ng-template #modalContent>
+
+      <div class="field">
+        <label class="label"> 标题</label>
+        <nz-input [(ngModel)]="selectedReduction.title"></nz-input>
+      </div>
+      <div class="field">
+        <label class="label"> 减免</label>
+        <nz-input [(ngModel)]="selectedReduction.value" [nzType]="'number'"></nz-input>
+      </div>
+
+      <div class="field">
+        <label for="">所有用户都拥有</label>
+        <nz-switch [(ngModel)]="selectedReduction.everyUser"></nz-switch>
+      </div>
+
+    </ng-template>
+  </nz-modal>
+</ng-container>

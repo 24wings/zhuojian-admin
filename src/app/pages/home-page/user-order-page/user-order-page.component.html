@@ -1,0 +1,141 @@
+<nz-breadcrumb style="margin:12px 0;">
+  <nz-breadcrumb-item routerLink="/admin">统计分析</nz-breadcrumb-item>
+  <nz-breadcrumb-item>用户订单</nz-breadcrumb-item>
+</nz-breadcrumb>
+
+
+<div style="padding:30px;">
+  <div style="background:#fff;">
+    <nz-card>
+      <ng-template #title>
+        搜索今日订单
+      </ng-template>
+      <ng-template #body>
+        关键字
+        <div style="margin-bottom:40px;">
+          <nz-input [(ngModel)]="keyword" [nzPlaceHolder]="'输入用户名或手机号'" style="max-width:200px;"></nz-input> 选择日期
+          <nz-rangepicker [(ngModel)]="dateRange" [nzPlaceholder]="['选择起始日期', '选择终止日期']"></nz-rangepicker>
+
+        </div>
+        <hr>
+        <div style="margin-bottom: 16px;">
+          <button nz-button [nzType]="'primary'" [nzLoading]="_operating" (click)="_operateData()">+ 新建</button>
+          <nz-dropdown>
+            <a class="ant-dropdown-link" nz-dropdown>
+              <button nz-button> 批量操作</button>
+              <i class="anticon anticon-down"></i>
+            </a>
+            <ul nz-menu>
+              <li nz-menu-item>
+                <a rel="noopener noreferrer">全部删除</a>
+              </li>
+              <!-- <li nz-menu-item> -->
+              <!-- <a target="_blank" rel="noopener noreferrer" href="http://www.alipay.com/">2nd menu item</a> -->
+              <!-- </li> -->
+              <!-- <li nz-menu-item> -->
+              <!-- <a target="_blank" rel="noopener noreferrer" href="http://www.alipay.com/">3rd menu item</a> -->
+              <!-- </li> -->
+            </ul>
+          </nz-dropdown>
+
+          <span style="margin-left: 8px;" *ngIf="_checkedNumber">Selected {{_checkedNumber}} items</span>
+        </div>
+        <nz-table #nzTable [nzDataSource]="_dataSet" [nzPageSize]="10" (nzDataChange)="_displayDataChange($event)" (nzPageIndexChange)="_refreshStatus()"
+          (nzPageSizeChange)="_refreshStatus()">
+          <thead nz-thead>
+            <tr>
+              <th nz-th nzCheckbox>
+                <label nz-checkbox [(ngModel)]="_allChecked" [nzIndeterminate]="_indeterminate" (ngModelChange)="_checkAll($event)">
+                </label>
+              </th>
+              <th nz-th>
+                <span>用户昵称</span>
+              </th>
+              <th nz-th>
+                <span>手机号</span>
+              </th>
+              <th nz-th>
+                <span>业绩</span>
+              </th>
+              <th nz-th>状态</th>
+              <th nz-th>创建时间</th>
+              <th nz-th>操作</th>
+            </tr>
+          </thead>
+          <tbody nz-tbody>
+            <tr nz-tbody-tr *ngFor="let user of users">
+              <td nz-td nzCheckbox>
+                <label nz-checkbox [(ngModel)]="user.checked" (ngModelChange)="_refreshStatus($event)">
+                </label>
+              </td>
+              <td nz-td>{{user.nickname}}</td>
+              <td nz-td>{{user.phone}}</td>
+              <td nz-td>{{user.bussiness}}</td>
+              <td nz-td>{{user.state}}</td>
+              <td nz-td>{{user.createDt | date:'yyyy-MM-DD hh:mm:ss '}}</td>
+              <td>
+                <!-- <a>删除</a> &nbsp;&nbsp;&nbsp; -->
+                <a routerLink="/admin/user-detail" [queryParams]="{orderState:user.state}">查询</a>
+              </td>
+            </tr>
+          </tbody>
+        </nz-table>
+      </ng-template>
+    </nz-card>
+    <nz-card>
+      <ng-template #title>用户订单</ng-template>
+      <ng-template #body>
+        <nz-table #nzTable [nzPageSize]="10" (nzDataChange)="_displayDataChange($event)" (nzPageIndexChange)="_refreshStatus()" (nzPageSizeChange)="_refreshStatus()">
+          <thead nz-thead>
+            <tr>
+              <th nz-th nzCheckbox>
+                <label nz-checkbox [(ngModel)]="_allChecked" [nzIndeterminate]="_indeterminate" (ngModelChange)="_checkAll($event)">
+                </label>
+              </th>
+              <th nz-th>
+                <span>用户昵称</span>
+              </th>
+              <th nz-th>
+                <span>手机号</span>
+              </th>
+              <th nz-th>
+                <span>业绩</span>
+              </th>
+              <th nz-th>状态</th>
+              <th nz-th>创建时间</th>
+              <th nz-th>操作</th>
+            </tr>
+          </thead>
+          <tbody nz-tbody>
+            <tr nz-tbody-tr *ngFor="let order of orders">
+              <td nz-td nzCheckbox>
+                <label nz-checkbox [(ngModel)]="order.checked" (ngModelChange)="_refreshStatus($event)">
+                </label>
+              </td>
+              <td nz-td>{{order.createDt | date:'yyyy-MM-dd hh-mm-ss'}}</td>
+              <td nz-td>{{order.product.name}}</td>
+              <td nz-td>
+                <span [ngSwitch]="order.state">
+                  <p *ngSwitchCase="FruitOrderState.UnConfirm">
+                    未确认
+                  </p>
+                  <p *ngSwitchCase="FruitOrderState.SendProduct">
+                    待发货
+                  </p>
+                  <p *ngSwitchDefault>
+                    已完结
+                  </p>
+                </span>
+              </td>
+              <td nz-td>{{order.num}}</td>
+              <!-- <td nz-td>{{user.createDt | date:'yyyy-MM-DD hh:mm:ss '}}</td> -->
+              <td>
+                <a routerLink="/admin/order-detail" [queryParams]="{orderState:order.state}">详情</a> &nbsp;&nbsp;&nbsp;
+              </td>
+            </tr>
+          </tbody>
+        </nz-table>
+      </ng-template>
+    </nz-card>
+  </div>
+</div>

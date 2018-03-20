@@ -1,0 +1,89 @@
+<nz-breadcrumb style="margin:12px 0;">
+  <nz-breadcrumb-item routerLink="/admin">仓库物流</nz-breadcrumb-item>
+  <nz-breadcrumb-item>仓库管理</nz-breadcrumb-item>
+</nz-breadcrumb>
+
+<div style="padding:30px">
+  <div style="background:#fff">
+    <div style="margin-bottom:30px;">
+      <nz-card style="width:100%;" [nzBordered]="false">
+
+        <ng-template #extra>
+          <a>x</a>
+        </ng-template>
+
+        <ng-template #body>
+
+          <div nz-row>
+            <div nz-col [nzSpan]="8">
+              今日进货次数 4 批
+            </div>
+            <div nz-col [nzSpan]="8">
+              今日缺货次数 8 次
+            </div>
+            <div nz-col [nzSpan]="8">
+              本月总进货数量 15000 斤
+            </div>
+          </div>
+          <div style="padding:30px;">
+            <button nz-button [nzType]="'primary'" [nzLoading]="_operating" (click)="_operateData()">+新建</button>
+            <button nz-button>批量删除</button>
+          </div>
+          <hr>
+          <span style="margin-left: 8px;" *ngIf="_checkedNumber">选择 {{_checkedNumber}} 条</span>
+          <nz-table #nzTable [nzDataSource]="_dataSet" [nzPageSize]="pageSize" (nzDataChange)="_displayDataChange($event)" [(nzPageIndex)]="pageIndex"
+            (nzPageIndexChange)="_refreshStatus()" (nzPageSizeChange)="_refreshStatus($event)">
+            <thead nz-thead>
+              <tr>
+                <th nz-th nzCheckbox>
+                  <label nz-checkbox [(ngModel)]="_allChecked" [nzIndeterminate]="_indeterminate" (ngModelChange)="_checkAll($event)">
+                  </label>
+                </th>
+                <th nz-th>进货时间</th>
+                <th nz-th>
+                  <span>货品</span>
+                </th>
+                <th nz-th>开销</th>
+                <th nz-th>
+                  <span>状态</span>
+                </th>
+                <th nz-th>
+                  <span>物流损失</span>
+                </th>
+                <th nz-th>操作</th>
+
+              </tr>
+            </thead>
+            <tbody nz-tbody>
+              <ng-container *ngFor="let record of records;let i = index;">
+                <tr nz-tbody-tr *ngIf="pageIndex *10-10 <= i && pageIndex *10  >i">
+                  <td nz-td nzCheckbox>
+                    <label nz-checkbox [(ngModel)]="record.checked" (ngModelChange)="_refreshStatus($event)">
+                    </label>
+                  </td>
+
+                  <td>{{record.createDt | date:'yyyy-MM-dd hh:mm'}}</td>
+                  <td nz-td>
+                    <a> {{record.product.name}} </a>
+
+                  </td>
+
+                  <td nz-td>{{record.price}}</td>
+                  <td nz-td>{{record.state}}</td>
+                  <td nz-td>{{record.transferWatste}}</td>
+
+                  <td nz-td>
+                    <a>配置</a>
+                    <a>查询</a>
+
+
+                  </td>
+                </tr>
+              </ng-container>
+            </tbody>
+          </nz-table>
+        </ng-template>
+      </nz-card>
+    </div>
+  </div>
+</div>

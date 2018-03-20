@@ -1,0 +1,14 @@
+<nz-breadcrumb style="margin:12px 0;">
+  <nz-breadcrumb-item routerLink="/admin">统计分析</nz-breadcrumb-item>
+  <nz-breadcrumb-item routerLink="/old-order">订单列表</nz-breadcrumb-item>
+</nz-breadcrumb>
+
+<span [ngSwitch]="orderState">
+  <app-unconfirm-order *ngSwitchCase="FruitOrderState.UnConfirm"></app-unconfirm-order>
+  <app-send-product-order *ngSwitchCase="FruitOrderState.SendProduct"></app-send-product-order>
+  <app-recive-product-order *ngSwitchCase="FruitOrderState.ReciveProduct"></app-recive-product-order>
+  <app-finish-order *ngSwitchCase="FruitOrderState.Finish"></app-finish-order>
+
+
+
+</span>

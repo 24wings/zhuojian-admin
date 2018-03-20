@@ -1,0 +1,52 @@
+.ant-card-head .ng-star-inserted,
+.ant-card-head-title {
+  height: 120px
+}
+
+.time-seg {
+  position: relative;
+  float: right;
+  top: -41px;
+}
+
+.time-seg span {
+  margin: 10px 15px;
+}
+
+.sort {
+  .text {
+    display: flex;
+    width: 200px;
+    justify-content: space-between;
+  }
+}
+
+.sort li {
+  display: flex;
+  margin: 15px auto;
+}
+
+#bishu2,
+#bishu3 {
+  min-height: 500px;
+  max-width: 1200px;
+  display: flex;
+  align-items: center;
+}
+
+h2 {
+  padding: 20px;
+}
+
+#week {
+  max-width: 250px;
+}
+
+.h2 {
+  font-size: 1.5rem;
+  color: #000;
+}
+
+#circle {
+  width: 400px;
+}

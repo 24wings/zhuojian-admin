@@ -1,0 +1,106 @@
+<nz-breadcrumb style="margin:12px 0;">
+  <nz-breadcrumb-item routerLink="/admin">统计分析</nz-breadcrumb-item>
+  <nz-breadcrumb-item>历史订单</nz-breadcrumb-item>
+</nz-breadcrumb>
+
+
+<div style="padding:30px;">
+  <div style="background:#fff;">
+    <nz-card>
+      <ng-template #title>搜索</ng-template>
+      <ng-template #body>
+        关键字
+        <div style="margin-bottom:40px;">
+          <nz-input [(ngModel)]="keyword" [nzPlaceHolder]="'输入用户名或手机号'" style="max-width:200px;"></nz-input> 选择日期
+          <nz-rangepicker [(ngModel)]="dateRange" [nzPlaceholder]="['选择起始日期', '选择终止日期']"></nz-rangepicker>
+
+        </div>
+        <hr>
+        <div>
+          <label nz-checkbox [(ngModel)]="allChecked" (ngModelChange)="updateAllChecked()" [nzIndeterminate]="indeterminate">
+            <span>全选</span>
+          </label>
+        </div>
+        <br>
+        <nz-checkbox-group [(ngModel)]="checkOptionsOne" (ngModelChange)="updateSingleChecked()"></nz-checkbox-group>
+        <br>
+
+        <button nz-button [nzType]="'primary'" [nzLoading]="_operating">+ 新建</button>
+        <nz-dropdown>
+          <a class="ant-dropdown-link" nz-dropdown>
+            <button nz-button> 批量操作</button>
+            <i class="anticon anticon-down"></i>
+          </a>
+          <ul nz-menu>
+            <li nz-menu-item>
+              <a rel="noopener noreferrer">全部删除</a>
+            </li>
+            <!-- <li nz-menu-item> -->
+            <!-- <a target="_blank" rel="noopener noreferrer" href="http://www.alipay.com/">2nd menu item</a> -->
+            <!-- </li> -->
+            <!-- <li nz-menu-item> -->
+            <!-- <a target="_blank" rel="noopener noreferrer" href="http://www.alipay.com/">3rd menu item</a> -->
+            <!-- </li> -->
+          </ul>
+        </nz-dropdown>
+        <hr style="margin:30px;">
+        <nz-table #nzTable [nzDataSource]="_dataSet" [nzPageSize]="10" (nzPageIndexChange)="_refreshStatus()" (nzPageSizeChange)="_refreshStatus()"
+          [(nzPageIndex)]="pageIndex">
+          <thead nz-thead>
+            <tr>
+              <th nz-th nzCheckbox>
+                <label nz-checkbox [(ngModel)]="_allChecked" [nzIndeterminate]="_indeterminate" (ngModelChange)="_checkAll($event)">
+                </label>
+              </th>
+              <th nz-th>
+                <span>用户昵称</span>
+              </th>
+              <th nz-th>
+                <span>手机号</span>
+              </th>
+              <th nz-th>
+                <span>数量/斤</span>
+              </th>
+              <th nz-th>状态</th>
+              <th nz-th>创建时间</th>
+              <th nz-th>操作</th>
+            </tr>
+          </thead>
+          <tbody nz-tbody>
+            <ng-container *ngFor="let order of orders;let i=index;">
+              <tr nz-tbody-tr *ngIf="pageIndex *10-10 <= i && pageIndex *10  >i">
+                <td nz-td nzCheckbox>
+                  <label nz-checkbox [(ngModel)]="order.checked" (ngModelChange)="_refreshStatus($event)">
+                  </label>
+                </td>
+                <td nz-td>{{order.createDt | date:'yyyy-MM-dd hh-mm-ss'}}</td>
+                <td nz-td>{{order.product.name}}</td>
+                <td nz-td>{{order.num}}</td>
+                <td nz-td>
+                  <span [ngSwitch]="order.state">
+                    <p *ngSwitchCase="FruitOrderState.UnConfirm">
+                      未确认
+                    </p>
+                    <p *ngSwitchCase="FruitOrderState.SendProduct">
+                      待发货
+                    </p>
+                    <p *ngSwitchDefault>
+                      已完结
+                    </p>
+                  </span>
+                </td>
+                <td nz-td>{{order.createDt | date:'yyyy-MM-dd hh:mm:ss'}}</td>
+                <!-- <td nz-td>{{user.createDt | date:'yyyy-MM-DD hh:mm:ss '}}</td> -->
+                <td>
+                  <a routerLink="/admin/order-detail" [queryParams]="{orderState:order.state}">详情</a> &nbsp;&nbsp;&nbsp;
+
+                </td>
+              </tr>
+            </ng-container>
+          </tbody>
+        </nz-table>
+
+      </ng-template>
+    </nz-card>
+  </div>
+</div>

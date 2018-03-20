@@ -1,0 +1,35 @@
+/* You can add global styles to this file, and also import other style files */
+
+.text-center {
+  text-align: center;
+}
+
+.min-card .ant-card-body {
+  min-height: 350px;
+}
+
+.gray {
+  color: lightgray;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+}
+
+ul li,
+ol li,
+ul,
+ol,
+li {
+  list-style: none;
+}
+
+.ant-menu-item-selected {
+  background: #3399ff !important;
+}
+
+#nz-card {
+  font-size: .9rem;
+  line-height: 2.5rem;
+}

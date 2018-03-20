@@ -1,0 +1,51 @@
+<div class="container">
+
+  <div class="main">
+    <div class="top text-center">
+      <div class="header ">
+        <img src="https://preview.pro.ant.design/static/logo.b29324c4.svg" alt="" class="logo">
+      </div>
+      <div class="desc">应用管理后台</div>
+    </div>
+    <form nz-form [formGroup]="validateForm" class="login-form" (ngSubmit)="login()">
+      <div nz-form-item>
+        <div nz-form-control>
+          <nz-input formControlName="userName" [nzPlaceHolder]="'Username'" [nzSize]="'large'">
+            <ng-template #prefix>
+              <i class="anticon anticon-user"></i>
+            </ng-template>
+          </nz-input>
+          <div nz-form-explain *ngIf="validateForm.controls.userName.dirty&&validateForm.controls.userName.hasError('required')">请输入用户名</div>
+        </div>
+      </div>
+      <div nz-form-item>
+        <div nz-form-control>
+          <nz-input formControlName="password" [nzType]="'password'" [nzPlaceHolder]="'Password'" [nzSize]="'large'">
+            <ng-template #prefix>
+              <i class="anticon anticon-lock"></i>
+            </ng-template>
+          </nz-input>
+          <div nz-form-explain *ngIf="validateForm.controls.password.dirty&&validateForm.controls.password.hasError('required')">请输入密码</div>
+        </div>
+      </div>
+      <div nz-form-item>
+        <div nz-form-control>
+          <!-- <label nz-checkbox formControlName="remember"> -->
+          <!-- <span>Remember me</span> -->
+          <!-- </label> -->
+          <!-- <a class="login-form-forgot" class="login-form-forgot">忘记密码</a> -->
+          <button nz-button class="login-form-button" [nzType]="'primary'" [nzSize]="'large'">登录</button>
+          <!-- Or -->
+          <!-- <a href="">register now!</a> -->
+        </div>
+      </div>
+    </form>
+
+  </div>
+  <!-- footer -->
+  <div class="footer golbal-footer ">
+    <span class="copyright">
+      由刺月无影提供
+    </span>
+  </div>
+</div>
