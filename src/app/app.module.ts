@@ -30,6 +30,21 @@ import { AddUserPageComponent } from "./pages/home-page/add-user-page/add-user-p
 import { UserDetailPageComponent } from "./pages/home-page/user-detail-page/user-detail-page.component";
 import { ReductionPageComponent } from "./pages/home-page/reduction-page/reduction-page.component";
 import { BangweiH5PageComponent } from "./pages/home-page/bangwei-h5-page/bangwei-h5-page.component";
+import { FenxiaoUserManagePageComponent } from "./pages/home-page/fenxiao-user-manage-page/fenxiao-user-manage-page.component";
+import { SubmitShopPagesComponent } from "./pages/home-page/submit-shop-pages/submit-shop-pages.component";
+import { SubmitShopHistoryPageComponent } from "./pages/submit-shop-history-page/submit-shop-history-page.component";
+import { VerifyFxuserPageComponent } from "./pages/home-page/verify-fxuser-page/verify-fxuser-page.component";
+import { WechatPageComponent } from "./pages/wechat-page/wechat-page.component";
+import { WechatButtonPageComponent } from "./pages/wechat-button-page/wechat-button-page.component";
+import { FormListComponent } from "./com/form-list/form-list.component";
+import { StrKeyPipe } from "./pipe/str-key.pipe";
+import { AutoFormComponent } from "./com/auto-form/auto-form.component";
+import { FormCreateComponent } from "./com/form-create/form-create.component";
+import { FormUpdateComponent } from "./com/form-update/form-update.component";
+import { OrderStateComponent } from "./com/order-state/order-state.component";
+import { BillListComponent } from "./com/bill-list/bill-list.component";
+import { TestShopPageComponent } from "./pages/home-page/test-shop-page/test-shop-page.component";
+import { MaterialPageComponent } from "./pages/home-page/material-page/material-page.component";
 
 @NgModule({
   declarations: [
@@ -56,7 +71,22 @@ import { BangweiH5PageComponent } from "./pages/home-page/bangwei-h5-page/bangwe
     // EditUserPageComponent,
     UserDetailPageComponent,
     ReductionPageComponent,
-    BangweiH5PageComponent
+    BangweiH5PageComponent,
+    FenxiaoUserManagePageComponent,
+    SubmitShopPagesComponent,
+    SubmitShopHistoryPageComponent,
+    VerifyFxuserPageComponent,
+    WechatPageComponent,
+    WechatButtonPageComponent,
+    FormListComponent,
+    StrKeyPipe,
+    AutoFormComponent,
+    FormCreateComponent,
+    FormUpdateComponent,
+    OrderStateComponent,
+    BillListComponent,
+    TestShopPageComponent,
+    MaterialPageComponent
   ],
   imports: [
     HttpClientModule,
@@ -72,31 +102,7 @@ import { BangweiH5PageComponent } from "./pages/home-page/bangwei-h5-page/bangwe
       {
         path: "admin",
         component: HomePageComponent,
-        children: [
-          { path: "", component: IndexPageComponent },
-          { path: "today-order", component: TodayOrderPageComponent },
-          { path: "user-order", component: UserOrderPageComponent },
-          { path: "old-order", component: OldOrderPageComponent },
-          { path: "order-detail", component: OrderDetailPageComponent }, // 订单详情页
-          { path: "history-order", component: HistoryOrderPageComponent },
-          { path: "user-manage", component: UserManagePageComponent },
-          {
-            path: "product-group-manage",
-            component: ProductGroupManagePageComponent
-          },
-          { path: "product-manage", component: ProductManagePageComponent },
-          { path: "store-manage", component: StoreManagePageComponent },
-          { path: "transfer-manage", component: TransferManagePageComponent },
-          {
-            path: "send-record-manage",
-            component: SendRecordManagePageComponent
-          },
-          { path: "add-user", component: AddUserPageComponent },
-          // { path: "edit-user", component: EditUserPageComponent },
-          { path: "user-detail", component: UserDetailPageComponent },
-          { path: "reduction", component: ReductionPageComponent },
-          { path: "bangwei-h5", component: BangweiH5PageComponent }
-        ]
+        children: [{ path: "", component: MaterialPageComponent }]
       }
     ])
   ],

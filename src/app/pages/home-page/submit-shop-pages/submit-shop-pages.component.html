@@ -1,0 +1,157 @@
+<nz-breadcrumb style="margin:12px 0;">
+    <nz-breadcrumb-item routerLink="/admin">店铺地址</nz-breadcrumb-item>
+    <nz-breadcrumb-item>记录管理</nz-breadcrumb-item>
+</nz-breadcrumb>
+
+<div style="padding:30px;">
+    <div style="background:#fff">
+        <nz-card>
+            <ng-template #title>
+            </ng-template>
+            <ng-template #body>
+                <button nz-button [nzType]="showState==RecordState.All?'primary':'default'" (click)="showState=RecordState.All;listAllSubmitShops()">
+            全部</button>
+                <button nz-button [nzType]="showState==RecordState.Wait?'primary':'default'" (click)="showState=RecordState.Wait;listWaitSubmitShops()">
+            待审核</button>
+                <button nz-button [nzType]="showState==RecordState.Pass?'primary':'default'" (click)="showState=RecordState.Pass;listPassSubmitShops()">
+            审核通过</button>
+                <button nz-button [nzType]="showState==RecordState.Fail?'primary':'default'" (click)="showState=RecordState.Fail;listFailSubmitShops()">
+            审核失败</button>
+
+                <!-- <button nz-button [nzType]="selectedFenxaioUser==fenxiaoUser.value?'primary':'default'" *ngFor="let fenxiaoUser of fenxiaoUsers" (click)="selectedGroupId=group.value;listProducts()"> -->
+                <!-- <span>{{group.label}}</span> -->
+                <!-- </button> -->
+                <hr>
+                <button nz-button [nzType]="'primary'" [nzLoading]="_operating" (click)="createModalVisible=true">+ 新建</button>
+                <nz-dropdown>
+                    <!-- <nz-input [(ngModel)]="keyword" [nzPlaceHolder]="'输入产品组名'" style="max-width:200px;"></nz-input> 选择日期 -->
+                    <!-- <button nz-button [nzType]="'primary'">查询</button> -->
+                    <!-- <button nz-button>重置</button> -->
+                    <!-- 只显示推荐产品:
+            <nz-switch [(ngModel)]="showRecommand"></nz-switch> -->
+                    <a class="ant-dropdown-link" nz-dropdown>
+                        <button nz-button> 批量操作</button>
+                        <i class="anticon anticon-down"></i>
+                    </a>
+                    <ul nz-menu>
+                        <li nz-menu-item>
+                            <!-- <a rel="noopener noreferrer" (click)="deleteFenxiaoUsers()">删除选中</a> -->
+                        </li>
+                        <!-- <li nz-menu-item> -->
+                        <!-- <a target="_blank" rel="noopener noreferrer" href="http://www.alipay.com/">2nd menu item</a> -->
+                        <!-- </li> -->
+                        <!-- <li nz-menu-item> -->
+                        <!-- <a target="_blank" rel="noopener noreferrer" href="http://www.alipay.com/">3rd menu item</a> -->
+                        <!-- </li> -->
+                    </ul>
+                </nz-dropdown>
+
+                <!--   _id?: string;
+  images?: string[];
+  opreatorName?: string;
+  opreatorContact?: string;
+  masterName?: string;
+  masterContact?: string;
+  phone?: string;
+  workNum?: number;
+  roomNum?: number;
+  floorNum?: number;
+  shopArea?: number;
+  address?: string;
+  createDt?: Date;
+  systemBrand: string;
+  diaryFee: number;
+  telePhone: string; -->
+
+                <nz-table #nzTable [nzDataSource]="submitShops" [nzPageSize]="10" (nzDataChange)="_displayDataChange($event)" (nzPageIndexChange)="_refreshStatus()" (nzPageSizeChange)="_refreshStatus()">
+                    <thead nz-thead>
+                        <tr>
+                            <th nz-th nzCheckbox>
+                                <label nz-checkbox [(ngModel)]="_allChecked" [nzIndeterminate]="_indeterminate" (ngModelChange)="_checkAll($event)">
+                  </label>
+                            </th>
+                            <th nz-th>座机</th>
+                            <th nz-th>情报员</th>
+                            <th nz-th>图片</th>
+                            <th nz-th>
+                                <span>经营者名字</span>
+                            </th>
+                            <th nz-th>经营者联系方式</th>
+                            <th nz-th>
+                                店主名字
+                            </th>
+                            <th nz-th>
+                                <span>店主联系方式</span>
+                            </th>
+                            <!-- <th nz-th>座机</th> -->
+                            <th nz-th>
+                                <span>技师保有量</span>
+                            </th>
+                            <th nz-th>
+                                <span>房间数量</span>
+                            </th>
+                            <th nz-th>层数</th>
+                            <th nz-th>
+                                <span>面积</span>
+                            </th>
+                            <th nz-th>地址</th>
+                            <th nz-th>日营业额</th>
+                            <th nz-th>报钟系统</th>
+
+                            <th nz-th>提交时间</th>
+                            <th nz-th>操作</th>
+                        </tr>
+                    </thead>
+                    <tbody nz-tbody>
+                        <tr nz-tbody-tr *ngFor="let data of submitShops">
+                            <td nz-td nzCheckbox>
+                                <label nz-checkbox [(ngModel)]="data.checked" (ngModelChange)="_refreshStatus($event)">
+                  </label>
+                            </td>
+                            <td nz-td>{{data.telePhone}}</td>
+                            <td nz-td>{{data.reportUser?.nickname || data.reportUser?.Nickname}}</td>
+                            <td nz-td>
+                                <img [src]="image.url" *ngFor="let image of data.images" style="max-width: 200px;max-height: 80px;">
+                            </td>
+                            <td nz-td>{{data.opreatorName}}</td>
+                            <td nz-td>{{data.opreatorContact}}</td>
+                            <td nz-td>{{data.masterName}}</td>
+                            <td nz-td>{{data.masterContact}}</td>
+                            <td nz-td>{{data.workNum}}</td>
+                            <td nz-td>{{data.roomNum}}</td>
+                            <td nz-td>
+                                {{data.floorNum}}
+                            </td>
+                            <td nz-td>{{data.shopArea}}</td>
+                            <td nz-td>{{data.address}}</td>
+                            <td nz-td>{{data.diaryFee}}</td>
+                            <td nz-td>{{data.systemBrand}}</td>
+
+                            <td nz-td>{{data.createDt | date:'yyyy-MM-dd hh:mm'}}</td>
+                            <td nz-td *ngIf="data.state==RecordState.Wait">
+                                <nz-popconfirm [nzTitle]="'确定审核通过'" (nzOnConfirm)="passSubmitShop(data)">
+                                    <a nz-popconfirm>审核通过</a>
+                                </nz-popconfirm>
+                                <nz-popconfirm [nzTitle]="'确定审核失败?'" (nzOnConfirm)="failSubmitShop(data)">
+                                    <a nz-popconfirm>审核失败</a>
+                                </nz-popconfirm>
+                                <!-- <a (click)="activeProduct(data._id)"> 上架</a> -->
+                                <!-- <a (click)="unactiveProduct(data._id)">下架</a> -->
+                                <!-- <a (click)="selectedProduct=data;modifyModalVisible=true">编辑</a> -->
+                                <!-- <a (click)="selectedLocation=data.location" *ngIf="data.location">详细地址({{data?.location?.lng}},{{data?.location?.lat}})</a> -->
+                            </td>
+                        </tr>
+                    </tbody>
+                </nz-table>
+
+            </ng-template>
+        </nz-card>
+    </div>
+</div>
+
+
+<nz-modal [nzVisible]="selectedLocation" [nzTitle]="'详细地址'" [nzContent]="modalContent" (nzOnCancel)="selectedLocation=null" (nzOnOk)="selectedLocation=null">
+    <ng-template #modalContent>
+        <app-location [location]="selectedLocation" *ngIf="selectedLocation"></app-location>
+    </ng-template>
+</nz-modal>

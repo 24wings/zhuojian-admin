@@ -1,17 +1,15 @@
-import { Component, OnInit } from '@angular/core';
-import { ConfigService } from '../../lib';
+import { Component, OnInit } from "@angular/core";
+import { ConfigService } from "../../lib";
 @Component({
-  selector: 'app-home-page',
-  templateUrl: './home-page.component.html',
-  styleUrls: ['./home-page.component.scss']
+  selector: "app-home-page",
+  templateUrl: "./home-page.component.html",
+  styleUrls: ["./home-page.component.scss"]
 })
 export class HomePageComponent implements OnInit {
   isCollapsed = false;
   admin: any;
   sendProductOrdersNum: number = 0;
-  constructor(public config: ConfigService) {
-
-  }
+  constructor(public config: ConfigService) {}
 
   async ngOnInit() {
     await this.getAdminInfo();
@@ -21,9 +19,8 @@ export class HomePageComponent implements OnInit {
   async getAdminInfo() {
     this.admin = await this.config.fruit.getAdminInfo();
     if (!this.admin) {
-      this.config.router.navigateByUrl('/admin/login');
+      this.config.router.navigateByUrl("/admin/login");
     }
-
   }
   async getSendProductOrdersNum() {
     this.sendProductOrdersNum = await this.config.fruit.getSendProductOrdersNum();
@@ -31,7 +28,7 @@ export class HomePageComponent implements OnInit {
 
   async logout() {
     // await this.config.fruit.adminLogout();
-    this.config.router.navigateByUrl('/admin/login');
+    this.config.router.navigateByUrl("/admin/login");
     // window.location.reload();
   }
 }

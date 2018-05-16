@@ -11,6 +11,8 @@
 
         <hr>
         <button nz-button [nzType]="'primary'" [nzLoading]="_operating" (click)="createModalVisible=true">+ 新建</button>
+
+        <app-auto-form [fields]="fields" [model]="model"></app-auto-form>
         <nz-dropdown>
           <!-- <nz-input [(ngModel)]="keyword" [nzPlaceHolder]="'输入产品组名'" style="max-width:200px;"></nz-input> 选择日期 -->
           <!-- <button nz-button [nzType]="'primary'">查询</button> -->
@@ -33,6 +35,7 @@
             <!-- </li> -->
           </ul>
         </nz-dropdown>
+
         <nz-table #nzTable [nzDataSource]="reductions" [nzPageSize]="10" (nzDataChange)="_displayDataChange($event)" (nzPageIndexChange)="_refreshStatus()"
           (nzPageSizeChange)="_refreshStatus()">
           <thead nz-thead>
@@ -41,6 +44,7 @@
                 <label nz-checkbox [(ngModel)]="_allChecked" [nzIndeterminate]="_indeterminate" (ngModelChange)="_checkAll($event)">
                 </label>
               </th>
+              <th nz-th>图标</th>
               <th nz-th>
                 <span>优惠券</span>
               </th>
@@ -63,6 +67,9 @@
               <td nz-td nzCheckbox>
                 <label nz-checkbox [(ngModel)]="data.checked" (ngModelChange)="_refreshStatus($event)">
                 </label>
+              </td>
+              <td nz-td>
+                <img [src]="data.icon?.url" alt="" style="max-width:80px;">
               </td>
               <td nz-td>{{data.title}}</td>
 
@@ -95,6 +102,18 @@
   (nzOnOk)="createModalVisible=false;createReduction($event);">
   <ng-template #modalContent>
     <div class="field">
+      <label>图标</label>
+      <div>
+        <figure (click)="selectImage()">
+          <img src="/assets/images/upload-image.png" alt="">
+        </figure>
+
+        <figure style="max-width:45%;display:inline-block;">
+          <img [src]="newReduction.icon" style="max-width:100%;max-height:100%;" alt="">
+        </figure>
+      </div>
+    </div>
+    <div class="field">
       <label class="label"> 消费券标题</label>
       <nz-input [(ngModel)]="newReduction.title"></nz-input>
     </div>
@@ -120,7 +139,18 @@
   <nz-modal [nzVisible]="modifyModalVisible" [nzTitle]="'添加产品'" [nzContent]="modalContent" (nzOnCancel)="modifyModalVisible=false;"
     (nzOnOk)="modifyModalVisible=false;modifyReduction($event)">
     <ng-template #modalContent>
+      <div class="field">
+        <label>图标</label>
+        <div>
+          <figure (click)="updateImage()">
+            <img src="/assets/images/upload-image.png" alt="">
+          </figure>
 
+          <figure style="max-width:45%;display:inline-block;">
+            <img [src]="newReduction.icon" style="max-width:100%;max-height:100%;" alt="">
+          </figure>
+        </div>
+      </div>
       <div class="field">
         <label class="label"> 标题</label>
         <nz-input [(ngModel)]="selectedReduction.title"></nz-input>

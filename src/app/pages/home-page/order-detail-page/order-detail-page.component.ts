@@ -1,25 +1,38 @@
-import { Component, OnInit } from '@angular/core';
-import { ConfigService, FruitOrderState } from '../../../lib';
+import { Component, OnInit } from "@angular/core";
+import {
+  ConfigService,
+  FruitOrderState,
+  FenxiaoAdminService,
+  BangweiOrderState
+} from "../../../lib";
 @Component({
-  selector: 'app-order-detail-page',
-  templateUrl: './order-detail-page.component.html',
-  styleUrls: ['./order-detail-page.component.scss']
+  selector: "app-order-detail-page",
+  templateUrl: "./order-detail-page.component.html",
+  styleUrls: ["./order-detail-page.component.scss"]
 })
 export class OrderDetailPageComponent implements OnInit {
-  FruitOrderState = FruitOrderState;
-  orderId
-  orderState: number;
-  constructor(public config: ConfigService) {
-    // this.orderId = this.config.route.snapshot.queryParams.orderId
-    this.orderState = this.config.route.snapshot.queryParams.orderState
+  BangweiOrderState = BangweiOrderState;
+  orderId: string;
+  order: any;
+  bills: any[] = [];
+  // orderState: number;
+  constructor(public config: ConfigService, public admin: FenxiaoAdminService) {
+    this.orderId = this.config.route.snapshot.queryParams.orderId;
+    // this.orderState = this.config.route.snapshot.queryParams.orderState;
+  }
+
+  async getOrderInfo() {
+    let result = await this.admin.getOrderInfo(this.orderId);
+    if (result) {
+      this.order = result.order;
+      this.bills = result.bills;
+    }
   }
 
   ngOnInit() {
+    this.getOrderInfo();
   }
-
 }
-
-
 
 interface IAppSetting {
   sidebarCollpsed: boolean;

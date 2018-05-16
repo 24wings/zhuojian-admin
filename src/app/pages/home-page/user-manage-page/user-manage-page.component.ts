@@ -85,7 +85,7 @@ export class UserManagePageComponent implements OnInit {
     this.users = await this.config.api.Get(bangweiShopAdminApi.user.list);
   }
   /** 线上禁用 */
-  async createUser() {
+  async createUser($event) {
     await this.config.api.Post(bangweiShopAdminApi.user.create, this.newUser);
     await this.listUsers();
   }

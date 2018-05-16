@@ -4,6 +4,11 @@ import { Http, RequestOptions, RequestOptionsArgs } from "@angular/http";
 
 @Injectable()
 export class ApiService {
+  isDev: boolean = true;
+  get ip() {
+    return this.isDev ? this.localIp : this.serverIp;
+  }
+  localIp = "http://118.31.72.227";
   serverIp = "http://118.31.72.227";
 
   bangweiH5Api = {
@@ -12,25 +17,27 @@ export class ApiService {
   };
 
   Get(url: string, options?: RequestOptionsArgs) {
-    options = options ? options : {};
+    // options = options ? options : {};
 
-    options.withCredentials = true;
+    // options.withCredentials = true;
     return this.http
-      .get(`${this.serverIp}${url}`, options)
+      .get(`${this.ip}${url}`, options)
       .toPromise()
       .then(rtn => {
         let result = rtn.json();
-        return result.ok
-          ? result.data
-          : this.createMessage("error", result.data);
+        if (result.ok) {
+          return result.data;
+        } else {
+          return this.createMessage("error", result.data);
+        }
       });
   }
-  Post(url: string, body?: any, options?: RequestOptionsArgs) {
-    options = options ? options : {};
+  Post(url: string, body: any, options?: RequestOptionsArgs): Promise<any> {
+    // options = options ? options : {};
 
-    options.withCredentials = true;
+    // options.withCredentials = true;
     return this.http
-      .post(`${this.serverIp}${url}`, body, options)
+      .post(`${this.ip}${url}`, body, options)
       .toPromise()
       .then(rtn => {
         let result = rtn.json();
@@ -43,9 +50,9 @@ export class ApiService {
   Delete(url: string, options?: RequestOptionsArgs) {
     options = options ? options : {};
 
-    options.withCredentials = true;
+    // options.withCredentials = true;
     return this.http
-      .delete(`${this.serverIp}${url}`, options)
+      .delete(`${this.ip}${url}`, options)
       .toPromise()
       .then(rtn => {
         let result = rtn.json();
@@ -57,9 +64,9 @@ export class ApiService {
 
   Put(url: string, body, options?: RequestOptionsArgs) {
     options = options ? options : {};
-    options.withCredentials = true;
+    // options.withCredentials = true;
     return this.http
-      .put(`${this.serverIp}${url}`, body, options)
+      .put(`${this.ip}${url}`, body, options)
       .toPromise()
       .then(rtn => {
         let result = rtn.json();
@@ -71,7 +78,7 @@ export class ApiService {
   /** base64数据 */
   url2Qrcode(url: string): Promise<string> {
     return this.http
-      .post(`${this.serverIp}/api.url2Qrcode.go`, { url })
+      .post(`${this.ip}/api.url2Qrcode.go`, { url })
       .toPromise()
       .then(rtn => {
         let result = rtn.json();

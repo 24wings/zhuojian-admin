@@ -1,3 +1,7 @@
-<ng-container>
+<div [@ltrAnimation] *ngIf="!animation || animation=='ltr'" style="display:block;width:100vw;">
   <ng-content></ng-content>
-</ng-container>
+</div>
+
+<div *ngIf="'btt'==animation" [@bttAnimation] style="display:block;width:100vw;">
+  <ng-content></ng-content>
+</div>

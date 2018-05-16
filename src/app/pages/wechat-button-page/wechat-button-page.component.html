@@ -1,0 +1,123 @@
+<nz-breadcrumb style="margin:12px 0;">
+  <nz-breadcrumb-item routerLink="/admin">首页</nz-breadcrumb-item>
+  <nz-breadcrumb-item>微信菜单管理</nz-breadcrumb-item>
+</nz-breadcrumb>
+
+<div style="padding:30px">
+  <div style="background:#fff">
+
+    <ul nz-menu [nzMode]="'horizontal'">
+
+      <li nz-submenu *ngFor="let button of wechatMenu.menu.button" (mouseover)="selectedButton=button">
+        <span title>
+          <i class="anticon  anticon-picture " *ngIf="button.type=='click'|| !button.type "></i>
+          <i class="anticon anticon-link" *ngIf="button.type=='view'"></i>
+          {{button.name}}
+          <i class="anticon anticon-plus-square" (click)="selectedButton=button"></i>
+          <i class="anticon anticon-delete" (click)="  removeTopButton(button)"></i>
+        </span>
+        <ul>
+          <li nz-menu-group *ngFor="let subBtn of button.sub_button">
+            <span title>
+              <i class="anticon  anticon-picture " *ngIf="subBtn.type=='click' "></i>
+              <i class="anticon anticon-link" *ngIf="subBtn.type=='view'"></i>
+              <span (click)="openUrl(subBtn.url)"> {{subBtn.name}}</span>
+              <i class="anticon anticon-delete" (click)="  removeSencondButton(subBtn)"></i>
+            </span>
+            <!-- <ul >
+              <li nz-menu-item>Option 1</li>
+              <li nz-menu-item>Option 2</li>
+            </ul> -->
+          </li>
+          <!-- <li nz-menu-group>
+            <span title>Item 2</span> -->
+          <!-- <ul>
+              <li nz-menu-item>Option 3</li>
+              <li nz-menu-item>Option 4</li>
+            </ul> -->
+          <!-- </li> -->
+        </ul>
+      </li>
+      <!-- <li nz-menu-item>
+        <a href="https://ng.ant.design" target="_blank" rel="noopener noreferrer">Navigation Four - Link</a>
+      </li> -->
+    </ul>
+
+    <!-- </li> -->
+    <!-- <li nz-menu-item>
+      <a href="https://ng.ant.design" target="_blank" rel="noopener noreferrer">Navigation Four - Link</a>
+    </li> -->
+    <!-- </ul> -->
+    <div nz-col [nzSpan]="4" *ngFor="let button of wechatMenu.menu.button">
+      <!-- <button nz-button>{{button.name}} -->
+      <!-- <i class="anticon anticon-link" *ngIf="button.type=='click'|| !button.type "></i> -->
+      <!-- <i class="anticon anticon-picture" *ngIf="button.type!='click'"></i> -->
+      <!-- </button> -->
+      <!-- <div style="padding-left:30px"> -->
+      <!-- <button *ngFor="let subBtn of button.sub_button" nz-button>{{subBtn.name}} ** {{subBtn.type}} ** {{subBtn.key?subBtn.key:subBtn.url}}</button> -->
+      <!-- </div> -->
+    </div>
+
+    <div style="display:flex;justify-content:space-between;margin-top:20vh;">
+      <div>
+        <button nz-button (click)="createModalVisible=true">添加一级菜单</button>
+      </div>
+      <div>
+        <button nz-button="primary" (click)="createMenu()">确定提交</button>
+
+
+        <button (click)="removeMenu()" nz-button>销毁菜单</button>
+      </div>
+    </div>
+
+    <ng-container *ngIf="createModalVisible">
+      <nz-input-group [nzSize]="'large'">
+        <div nz-col [nzSpan]="4">
+          <input [(ngModel)]="newWechatButton.name" nz-input placeholder="按钮名称">
+        </div>
+        <!--  key -->
+        <div nz-col [nzSpan]="8" *ngIf="newWechatButton.type=='click'">
+          <input [(ngModel)]="newWechatButton.key" nz-input placeholder="请输入素材地址">
+        </div>
+        <!--  -->
+        <div nz-col [nzSpan]="8" *ngIf="newWechatButton.type=='view'">
+          <input [(ngModel)]="newWechatButton.url" nz-input placeholder="请输入链接地址">
+        </div>
+
+        <div nz-col [nzSpan]="8">
+          <nz-select style="width: 120px;" [(ngModel)]="newWechatButton.type" [nzPlaceHolder]="'按钮类型'" nzAllowClear>
+            <nz-option *ngFor="let option of buttonTypeOptions" [nzLabel]="option.label" [nzValue]="option.value">
+            </nz-option>
+          </nz-select>
+        </div>
+      </nz-input-group>
+      <button nz-button="primary" (click)="addNewButtonMenu()"> 添加</button>
+    </ng-container>
+
+  </div>
+</div>
+
+
+<div *ngIf="selectedButton">
+  <nz-input-group [nzSize]="'large'">
+    <div nz-col [nzSpan]="4">
+      <input [(ngModel)]="newSecondMenu.name" nz-input placeholder="按钮名称">
+    </div>
+    <!--  key -->
+    <div nz-col [nzSpan]="8" *ngIf="newSecondMenu.type=='click'">
+      <input [(ngModel)]="newSecondMenu.key" nz-input placeholder="请输入素材地址">
+    </div>
+    <!--  -->
+    <div nz-col [nzSpan]="8" *ngIf="newSecondMenu.type=='view'">
+      <input [(ngModel)]="newSecondMenu.url" nz-input placeholder="请输入链接地址">
+    </div>
+
+    <div nz-col [nzSpan]="8">
+      <nz-select style="width: 120px;" [(ngModel)]="newSecondMenu.type" [nzPlaceHolder]="'按钮类型'" nzAllowClear>
+        <nz-option *ngFor="let option of buttonTypeOptions" [nzLabel]="option.label" [nzValue]="option.value">
+        </nz-option>
+      </nz-select>
+    </div>
+  </nz-input-group>
+  <button nz-button="primary" (click)="addSecondMenu()"> 添加二级菜单</button>
+</div>

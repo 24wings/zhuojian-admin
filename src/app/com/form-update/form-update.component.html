@@ -1,0 +1,43 @@
+<app-transition>
+  <nz-modal [nzVisible]="selectedData" [nzTitle]="title" [nzContent]="modalContent" (nzOnCancel)="cancel()" (nzOnOk)="updateData()">
+    <ng-template #modalContent>
+
+      <div class="field" *ngFor="let field of fields">
+        <label class="label"> {{field.label}}</label>
+        <ng-container [ngSwitch]="field.type">
+          <!-- <div></div> -->
+          <div *ngSwitchCase="Type.Image">
+            <figure (click)="updateImage(field.key)">
+              <img src="/assets/images/upload-image.png" alt="">
+            </figure>
+            <figure style="max-width:45%;display:inline-block;">
+              <img [src]="selectedData[field.key]?.url" style="max-width:100%;max-height:100%;" alt="">
+            </figure>
+          </div>
+          <div *ngSwitchCase="Type.Number">
+            <nz-input [(ngModel)]="selectedData[field.key]" [nzType]="'number'"></nz-input>
+          </div>
+          <div *ngSwitchCase="Type.Select">
+            <nz-select style="width: 120px;" [(ngModel)]="selectedData[field.key]" [nzPlaceHolder]="field.label" nzAllowClear>
+              <nz-option *ngFor="let option of field.options" [nzLabel]="option.label" [nzValue]="option.value">
+              </nz-option>
+            </nz-select>
+
+          </div>
+          <div *ngSwitchCase="Type.Date">
+            <nz-datepicker [(ngModel)]="selectedData[field.key]" [nzPlaceHolder]="field.label"></nz-datepicker>
+          </div>
+          <div *ngSwitchDefault>
+            <nz-input [(ngModel)]="selectedData[field.key]"></nz-input>
+          </div>
+
+        </ng-container>
+
+      </div>
+
+
+
+    </ng-template>
+  </nz-modal>
+
+</app-transition>

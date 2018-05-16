@@ -1,29 +1,35 @@
-import { Component, OnInit } from '@angular/core';
-import { FormGroup, FormBuilder, Validators } from '@angular/forms';
-import { ConfigService } from '../../lib';
+import { Component, OnInit } from "@angular/core";
+import { Router } from "@angular/router";
+import { FormGroup, FormBuilder, Validators } from "@angular/forms";
+import { PcClientService } from "../../lib";
 @Component({
-  selector: 'app-login-page',
-  templateUrl: './login-page.component.html',
-  styleUrls: ['./login-page.component.scss']
+  selector: "app-login-page",
+  templateUrl: "./login-page.component.html",
+  styleUrls: ["./login-page.component.scss"]
 })
 export class LoginPageComponent implements OnInit {
   validateForm: FormGroup;
-  constructor(private fb: FormBuilder, public config: ConfigService) { }
+  shop_id: string = "";
+  password: string = "";
+  constructor(
+    private fb: FormBuilder,
+    public pcClient: PcClientService,
+    public router: Router
+  ) {}
 
   ngOnInit() {
     this.validateForm = this.fb.group({
       userName: [null, [Validators.required]],
       password: [null, [Validators.required]],
-      remember: [true],
+      remember: [true]
     });
   }
   async login() {
-    let result = await this.config.fruit.adminLogin(this.validateForm.value.userName, this.validateForm.value.password);
+    let result = await this.pcClient.login(this.shop_id, this.password);
     console.log(result);
     if (result) {
-      this.config.router.navigateByUrl('/admin');
+      localStorage.setItem("shop_id", this.shop_id);
+      this.router.navigateByUrl("/admin");
     }
-
   }
-
 }

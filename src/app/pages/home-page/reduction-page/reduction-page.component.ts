@@ -1,5 +1,10 @@
 import { Component, OnInit } from "@angular/core";
-import { ConfigService, bangweiShopAdminApi } from "../../../lib";
+import {
+  ConfigService,
+  bangweiShopAdminApi,
+  FormField,
+  DbService
+} from "../../../lib";
 
 @Component({
   selector: "app-reduction-page",
@@ -12,17 +17,62 @@ export class ReductionPageComponent implements OnInit {
   newReduction: Reduction = {
     title: "默认优惠标题",
     value: 800,
-    everyUser: false
+    everyUser: false,
+    icon: ""
   };
+
   selectedReduction: Reduction;
-  reductions: Reduction[];
+  reductions: Reduction[] = [];
   _indeterminate: boolean = false;
   _disabledButton = true;
   _checkedNumber = 0;
   _displayData: Array<any> = [];
   _operating = false;
   _allChecked = false;
-  constructor(public config: ConfigService) {}
+  model: string = this.db.models.bangweiReductionModel;
+  fields: Field[] = [
+    {
+      key: "icon",
+      // value:'',
+      label: "图标",
+      type: FormField.Image
+    },
+    {
+      key: "title",
+      label: "优惠券"
+    },
+    {
+      key: "value",
+      label: "减免",
+      default: 100,
+      type: FormField.Number
+    },
+    {
+      key: "everyUser",
+      label: "所有人拥有",
+      type: FormField.Select,
+      options: [{ label: "是", value: true }, { label: "否", value: false }],
+      default: true
+    },
+    {
+      key: "active",
+      label: "状态",
+      type: FormField.Select,
+      options: [
+        { label: "启用", value: true },
+        { label: "未启用", value: false }
+      ],
+      default: true
+    },
+    {
+      key: "createDt",
+      label: "创建时间",
+      type: FormField.Date,
+      default: new Date()
+    }
+  ];
+
+  constructor(public config: ConfigService, public db: DbService) {}
 
   ngOnInit() {
     this.listReductions();
@@ -33,7 +83,7 @@ export class ReductionPageComponent implements OnInit {
     );
   }
 
-  async createReduction() {
+  async createReduction($event) {
     await this.config.api.Post(
       bangweiShopAdminApi.reduction.create,
       this.newReduction
@@ -113,5 +163,12 @@ export class ReductionPageComponent implements OnInit {
       }
     );
     await this.listReductions();
+  }
+  async selectImage() {
+    this.newReduction.icon = await this.config.common.selectFile();
+  }
+
+  async updateImage() {
+    this.selectedReduction.icon = await this.config.common.selectFile();
   }
 }

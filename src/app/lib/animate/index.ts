@@ -1,1 +1,1 @@
-export { SlideInDownAnimation } from './SlideInDownAnimation';
+export { ltrAnimation, bttAnimation } from "./SlideInDownAnimation";

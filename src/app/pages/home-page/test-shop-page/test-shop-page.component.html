@@ -1,0 +1,67 @@
+<nz-tooltip [nzTitle]="'用户A没有推荐码'">
+    <span nz-tooltip>
+    <button nz-button [nzType]="'primary'" (click)="createShopUser('A')">
+      <span>创建测试商城用户A</span>
+    </button>
+
+    </span>
+</nz-tooltip>
+<button (click)="creatFxuser()"> <span>一级分销商a 和商户用户b</span></button><button (click)="creatFxuser()"> <span (click)="clearShopUser('b')">清除商户用户b</span></button>
+<button (click)="createFxUserParent()"><span>商户c和分销商b,c</span></button>
+<button (click)="createFxUserParentParent()"><span>商户d和分销商 d,e,f</span></button>
+<button nz-button [nzType]="'primary'" (click)="clearShopUser('A')">
+  <span>清除测试商城用户A,以及所有相关数据</span>
+</button>
+<br>
+
+
+<button nz-button (click)="buyRandomProduct()">
+  <span>下单随机商品</span>
+</button>
+
+<button nz-button (click)="payOrderModalVisible=true">
+  <span>支付订单</span>
+</button>
+
+
+
+
+
+
+<h1>用户信息</h1>
+<div *ngIf="shopUser"> {{shopUser | json}} </div>
+<h2>优惠券</h2>
+<ul>
+    <li *ngFor="let ticket of tickets"> {{ticket| json}}</li>
+</ul>
+
+<h2>用户订单</h2>
+<ul>
+    <li *ngFor="let order of orders">{{order | json}}</li>
+</ul>
+<h2>用户账单</h2>
+<ul>
+    <li *ngFor="let bill of bills">{{bill | json}}</li>
+</ul>
+
+<div *ngIf="recommand">
+    <h3>用户推荐人</h3>
+    {{recommand |json}}
+</div>
+
+<div *ngIf="recommand">
+    <h3>用户推荐人上级</h3>
+    {{recommandParent | json}}
+</div>
+<div *ngIf="recommand">
+    <h3>用户推荐人</h3>
+    {{recommandParentParent | json}}
+</div>
+
+
+
+<nz-modal [nzVisible]="payOrderModalVisible" [nzTitle]="'支付订单'" [nzContent]="modalContent" (nzOnCancel)="payOrderModalVisible=false" (nzOnOk)="payOrder()">
+    <ng-template #modalContent>
+        <nz-input [(ngModel)]="orderId" [nzPlaceHolder]="'订单号'"></nz-input>
+    </ng-template>
+</nz-modal>

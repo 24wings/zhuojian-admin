@@ -1,0 +1,73 @@
+<nz-breadcrumb style="margin:12px 0;">
+    <nz-breadcrumb-item routerLink="/admin">首页</nz-breadcrumb-item>
+    <nz-breadcrumb-item>审核用户</nz-breadcrumb-item>
+</nz-breadcrumb>
+
+
+
+<button nz-button (click)="state=ShowState.WaitVerifyUser;refersh()" [nzType]="state==ShowState.WaitVerifyUser?'primary':'default'">待审核用户</button>
+
+<button nz-button (click)="state=ShowState.PassVerifyUser;refersh()" [nzType]="state==ShowState.PassVerifyUser?'primary':'default'">初审用户</button>
+
+<div style="padding:30px">
+    <div style="background:#fff">
+        <nz-table #nzTable [nzDataSource]="_dataSet" [nzPageSize]="10" (nzDataChange)="_displayDataChange($event)" (nzPageIndexChange)="_refreshStatus()" (nzPageSizeChange)="_refreshStatus()">
+            <thead nz-thead>
+                <tr>
+                    <th nz-th nzCheckbox>
+                        <label nz-checkbox [(ngModel)]="_allChecked" [nzIndeterminate]="_indeterminate" (ngModelChange)="_checkAll($event)">
+            </label>
+                    </th>
+                    <th nz-th>
+                        <span>Id</span>
+                    </th>
+                    <th nz-th>微信昵称</th>
+                    <th nz-th>昵称</th>
+                    <th nz-th>
+                        手机号
+                    </th>
+                    <th nz-th>
+                        <span>总额</span>
+                    </th>
+                    <th nz-th>余额</th>
+                    <th nz-th>状态</th>
+                    <th nz-th>
+                        <span>创建时间</span>
+                    </th>
+                    <th nz-th>
+                        <span>操作</span>
+                    </th>
+                </tr>
+            </thead>
+            <tbody nz-tbody>
+                <tr nz-tbody-tr *ngFor="let user of users">
+                    <td nz-td nzCheckbox>
+                        <label nz-checkbox [(ngModel)]="user.checked">
+            </label>
+                    </td>
+                    <td nz-td>{{user._id}}</td>
+                    <td nz-td>{{user.nickname }}</td>
+                    <td nz-td>{{user.Nickname}}</td>
+                    <td nz-td>{{user.Phone}}</td>
+                    <td nz-td>{{user.totalMoney}}</td>
+                    <td ng-td>{{user.lessMoney}}</td>
+
+                    <td nz-td>{{user.state ==1?"待审核":"初审通过"}}</td>
+                    <td nz-td>{{user.CreateDt | date:'yyyy-MM-dd hh:mm:ss '}}</td>
+                    <td nz-td>
+                        <!-- 待审核到审核通过 -->
+                        <nz-popconfirm [nzTitle]="'确定'" (nzOnConfirm)="confirmWaitVerify(user)" (nzOnCancel)="cancel()" *ngIf="user.state==FenxiaoUserState.WatingVerify">
+                            <a nz-popconfirm>审核通过</a>
+                        </nz-popconfirm>
+
+                        <nz-popconfirm [nzTitle]="'确定'" (nzOnConfirm)="FullMember(user)" (nzOnCancel)="cancel()" *ngIf="user.state==FenxiaoUserState.VerifyPass">
+                            <a nz-popconfirm>成为正式会员</a>
+                        </nz-popconfirm>
+
+                    </td>
+
+                </tr>
+            </tbody>
+        </nz-table>
+    </div>
+</div>

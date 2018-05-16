@@ -78,7 +78,7 @@ export class ProductManagePageComponent implements OnInit {
         (this.selectedGroupId ? `?groupId=${this.selectedGroupId}` : "")
     );
   }
-  async createProduct() {
+  async createProduct($event) {
     this.newProduct.images = (this.newProduct.images as any[])
       .map(image => image.changingThisBreaksApplicationSecurity)
       .filter(image => !!image);

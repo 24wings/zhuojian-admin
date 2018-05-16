@@ -3,24 +3,24 @@
   </ng-template>
   <ng-template #body>
     <div style="display:flex;">
-      <div style="flex:1">订单编号 1000000000</div>
+      <div style="flex:1">订单编号 {{order._id}}</div>
 
       <div style="flex:1">状态 待收货</div>
-      <div style="flex:1">产品编号 1000000000</div>
+      <div style="flex:1">产品编号 {{order.product._id}}</div>
     </div>
     <div>
-      发起时间 {{ now | date:'yyyy-MM-dd hh:mm:ss'}}
+      发起时间 {{ order.createDt | date:'yyyy-MM-dd hh:mm:ss'}}
     </div>
     <hr>
     <h3> 用户信息</h3>
     <div style="display:flex">
-      <div style="flex:1">用户姓名: 附小小 </div>
-      <div style="flex:1">联系电话: 18100000</div>
+      <div style="flex:1">用户姓名: {{order.user?.nickname || order.user?.Nickname}} </div>
+      <div style="flex:1">联系电话: {{order.user?.Phone}}</div>
       <div style="flex:1">常用快递: 菜鸟仓储</div>
     </div>
     <div style="display:flex">
-      <div style="flex:1">取货地址: 湖南省红河市万塘路18号 </div>
-      <div style="flex:1">备注: 无</div>
+      <div style="flex:1">取货地址: {{order.reciveAddress.region}} {{order.reciveAddress.city}} {{order.reciveAddress.area}} </div>
+      <div style="flex:1">详细地址: {{order.reciveAddress.detailAddress}}</div>
       <div style="flex:1">
         <button nz-button [nzType]="'primary'">联系商家</button>
       </div>
@@ -51,36 +51,41 @@
           <th nz-th>
             <span>总金额</span>
           </th>
+          <th nz-th>实际金额</th>
         </tr>
       </thead>
       <tbody nz-tbody>
-        <tr nz-tbody-tr *ngFor="let order of nzTable.data">
+        <tr nz-tbody-tr>
           <td nz-td>{{order._id}}</td>
           <td nz-td>
             <a>{{order.product.name}}</a>
           </td>
           <td nz-td>{{order.product._id}}</td>
-          <td nz-td>{{order.state}}</td>
-          <td nz-td>{{order.price}}</td>
+          <td nz-td>
+            <app-order-state [state]="order.state"></app-order-state>
+          </td>
+          <td nz-td>{{order.product.price}}</td>
           <td nz-td>{{order.num}}</td>
-          <td nz-td>{{order.num * order.price}}</td>
+          <td nz-td>{{order.num * order.product.price}}</td>
+          <td nz-td>{{order.totalPrice}}</td>
         </tr>
       </tbody>
     </nz-table>
 
 
     <nz-steps [(nzCurrent)]="current">
-      <nz-step [nzTitle]="'未确认'" [nzStatus]="'finish'" [nzDescription]="'用户附小小未确认   '  + (now | date:'yyyy-MM-dd hh:mm:ss') ">
+      <nz-step [nzTitle]="'未确认'" [nzStatus]="'finish'" [nzDescription]="'用户'+(order.user.nickname || order.user.Nickname)+'未确认   '  + (order.createDt | date:'yyyy-MM-dd hh:mm:ss') ">
         <ng-template #nzIcon>
           <i class="anticon anticon-user"></i>
         </ng-template>
       </nz-step>
-      <nz-step [nzTitle]="'待发货'" [nzDescription]="'商家 刺月无影发货中 ' +(now | date:'yyyy-MM-dd hh:mm:ss') " [nzStatus]="'finish'">
+      <nz-step [nzTitle]="'待发货'" [nzDescription]="'用户 '+(order.user.nickname || order.user.Nickname) +(order.payDate | date:'yyyy-MM-dd hh:mm:ss')+'支付完成'"
+        [nzStatus]="'finish'">
         <ng-template #nzIcon>
           <i class="anticon anticon-solution"></i>
         </ng-template>
       </nz-step>
-      <nz-step [nzTitle]="'待收货'" [nzDescription]="'商家 刺月无影已发货 ' +(now | date:'yyyy-MM-dd hh:mm:ss') " [nzStatus]="'process'">
+      <nz-step [nzTitle]="'待收货'" [nzDescription]="'商家已发货 ' +(order.sendDt | date:'yyyy-MM-dd hh:mm:ss') " [nzStatus]="'process'">
         <ng-template #nzIcon>
           <i class="anticon anticon-credit-card"></i>
         </ng-template>
@@ -93,40 +98,7 @@
     </nz-steps>
     <!-- 订单各个状态的数据 -->
 
-    <nz-table #nzTable2 [nzDataSource]="orderRecords" [nzPageSize]="10">
-      <thead nz-thead>
-        <tr>
-          <th nz-th>
-            <span>时间</span>
-          </th>
-          <th nz-th>
-            <span>当前进度</span>
-          </th>
-          <th nz-th>
-            <span>状态</span>
-          </th>
-          <th nz-th>
-            <span>操作员ID</span>
-          </th>
-          <th nz-th>
-            <span>耗时</span>
-          </th>
-        </tr>
-      </thead>
-      <tbody nz-tbody>
-        <tr nz-tbody-tr *ngFor="let data of nzTable2.data">
-          <td nz-td>
-            <a>{{data.createDt | date:'yyyy-MM-dd hh:mm:ss'}}</a>
-          </td>
-          <td nz-td>{{data.state}}</td>
-          <td nz-td>{{data.stage}}</td>
-          <td nz-td>
-            {{data.actioner}}
-          </td>
-          <td nz-td>{{data.spenTime}}</td>
-        </tr>
-      </tbody>
-    </nz-table>
+
   </ng-template>
 </nz-card>
 
@@ -156,7 +128,7 @@
       <div>
         <div class="label"> 发货日期</div>
         <div class="field">
-          <nz-datepicker [(ngModel)]="date" [nzPlaceHolder]="'Select date'"></nz-datepicker>
+          <nz-datepicker [(ngModel)]="date" [nzPlaceHolder]="'发货日期'"></nz-datepicker>
         </div>
       </div>
 

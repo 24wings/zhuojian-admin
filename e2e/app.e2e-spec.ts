@@ -1,6 +1,6 @@
 import { AppPage } from './app.po';
 
-describe('admin App', () => {
+describe('bangwei-shop-client App', () => {
   let page: AppPage;
 
   beforeEach(() => {

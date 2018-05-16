@@ -1,0 +1,11 @@
+<button nz-button>列表</button>
+
+<button nz-button (click)="createForm.show()"> 创建</button>
+
+<app-form-list #listForm [fields]="fields" [model]="model" (onEdit)="selectedData=$event;"></app-form-list>
+<app-form-create #createForm [visible]="createVisible" [fields]="fields" [model]="model" (onCreated)="listForm.listData()"></app-form-create>
+<ng-container *ngIf="selectedData">
+  <app-form-update #updateForm [fields]="fields" (onUpdated)="listForm.listData()" [selectedData]="selectedData" [model]="model"
+    (onUpdated)="listForm.listData()"></app-form-update>
+
+</ng-container>

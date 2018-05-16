@@ -1,0 +1,24 @@
+<span [ngSwitch]="state">
+  <p *ngSwitchCase="BangweiOrderState.Unpay">
+    未确认
+  </p>
+  <p *ngSwitchCase="BangweiOrderState.SendProduct">
+    待发货
+  </p>
+  <p *ngSwitchCase="BangweiOrderState.WaitReciveProduct">
+    待收货
+  </p>
+  <p *ngSwitchCase="BangweiOrderState.Finish">
+    已完结
+  </p>
+  <p *ngSwitchCase="BangweiOrderState.WaitProductCancel">待发货取消</p>
+  <p *ngSwitchCase="BangweiOrderState.ReciveCancel">待收货取消</p>
+
+  <p *ngSwitchCase="BangweiOrderState.Cancel">
+    代付款已取消
+  </p>
+  <p *ngSwitchCase="BangweiOrderState.RequestRefound">申请退款</p>
+
+
+
+</span>

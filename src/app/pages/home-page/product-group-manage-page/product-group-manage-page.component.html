@@ -102,7 +102,7 @@
 
 <!-- 显示添加产品组对话框 -->
 
-<nz-modal [nzVisible]="isVisible" [nzTitle]="'添加产品组'" [nzContent]="modalContent" (nzOnCancel)="handleCancel($event)" (nzOnOk)="handleCancel();createGroup($event)">
+<nz-modal [nzVisible]="isVisible" [nzTitle]="'添加产品组'" [nzContent]="modalContent" (nzOnCancel)="handleCancel($event)" (nzOnOk)="handleCancel($event);createGroup()">
   <ng-template #modalContent>
     <div class="field">
       <label class="label"> 产品组名字</label>

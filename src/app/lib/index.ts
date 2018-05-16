@@ -82,3 +82,17 @@ export let bangweiShopAdminApi = {
     delete: "/bangwei-shop/admin/delete-user"
   }
 };
+
+export enum BangweiOrderState {
+  Unpay = 1,
+  SendProduct, //代发货
+  Finish, // 确认收货
+  Commented, // 已经评论
+  Cancel, // 订单待支付取消
+  WaitReciveProduct, // 代收获
+  SendProductCancel, // 代发货取消
+  WaitProductCancel, // 待收货取消
+  ReciveCancel, // 已收货取消
+  Close, // 订单奖金派发完毕
+  RequestRefound // 商户申请退款
+}

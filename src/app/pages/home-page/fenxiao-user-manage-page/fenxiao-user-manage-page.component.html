@@ -1,0 +1,213 @@
+<nz-breadcrumb style="margin:12px 0;">
+    <nz-breadcrumb-item routerLink="/admin">分销商系统</nz-breadcrumb-item>
+    <nz-breadcrumb-item>分销商管理</nz-breadcrumb-item>
+</nz-breadcrumb>
+
+<div style="padding:30px;">
+    <div style="background:#fff">
+        <nz-card>
+            <ng-template #title>
+            </ng-template>
+            <ng-template #body>
+                <button nz-button [nzType]="!selectedFenxaioUser?'primary':'default'" (click)="selectedFenxaioUser='';listFenxiaoUsers()">
+            全部</button>
+                <!-- <button nz-button [nzType]="selectedFenxaioUser==fenxiaoUser.value?'primary':'default'" *ngFor="let fenxiaoUser of fenxiaoUsers" (click)="selectedGroupId=group.value;listProducts()"> -->
+                <!-- <span>{{group.label}}</span> -->
+                <!-- </button> -->
+                <hr>
+                <button nz-button [nzType]="'primary'" [nzLoading]="_operating" (click)="createModalVisible=true">+ 新建</button>
+                <nz-dropdown>
+                    <!-- <nz-input [(ngModel)]="keyword" [nzPlaceHolder]="'输入产品组名'" style="max-width:200px;"></nz-input> 选择日期 -->
+                    <!-- <button nz-button [nzType]="'primary'">查询</button> -->
+                    <!-- <button nz-button>重置</button> -->
+                    <!-- 只显示推荐产品:
+            <nz-switch [(ngModel)]="showRecommand"></nz-switch> -->
+                    <a class="ant-dropdown-link" nz-dropdown>
+                        <button nz-button> 批量操作</button>
+                        <i class="anticon anticon-down"></i>
+                    </a>
+                    <ul nz-menu>
+                        <li nz-menu-item>
+                            <a rel="noopener noreferrer" (click)="deleteFenxiaoUser()">删除选中</a>
+                        </li>
+                        <!-- <li nz-menu-item> -->
+                        <!-- <a target="_blank" rel="noopener noreferrer" href="http://www.alipay.com/">2nd menu item</a> -->
+                        <!-- </li> -->
+                        <!-- <li nz-menu-item> -->
+                        <!-- <a target="_blank" rel="noopener noreferrer" href="http://www.alipay.com/">3rd menu item</a> -->
+                        <!-- </li> -->
+                    </ul>
+                </nz-dropdown>
+                <nz-table #nzTable [nzDataSource]="fenxiaoUsers" [nzPageSize]="10" (nzDataChange)="_displayDataChange($event)" (nzPageIndexChange)="_refreshStatus()" (nzPageSizeChange)="_refreshStatus()">
+                    <thead nz-thead>
+                        <tr>
+                            <th nz-th nzCheckbox>
+                                <label nz-checkbox [(ngModel)]="_allChecked" [nzIndeterminate]="_indeterminate" (ngModelChange)="_checkAll($event)">
+                  </label>
+                            </th>
+                            <th nz-th>
+                                <span>Id</span>
+                            </th>
+                            <th nz-th>微信昵称</th>
+                            <th nz-th>昵称</th>
+                            <th nz-th>
+                                手机号
+                            </th>
+                            <th nz-th>
+                                <span>总额</span>
+                            </th>
+                            <th nz-th>余额</th>
+                            <th nz-th>
+                                <span>上级</span>
+                            </th>
+                            <th nz-th>
+                                <span>创建时间</span>
+                            </th>
+                            <th nz-th>
+                                <span>操作</span>
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody nz-tbody>
+                        <tr nz-tbody-tr *ngFor="let data of nzTable.data">
+                            <td nz-td nzCheckbox>
+                                <label nz-checkbox [(ngModel)]="data.checked" (ngModelChange)="_refreshStatus($event)">
+                  </label>
+                            </td>
+                            <td nz-td>{{data._id}}</td>
+                            <td nz-td>{{data.nickname}}</td>
+                            <td ng-td>{{data.Nickname}}</td>
+                            <td nz-td>{{data.Phone}}</td>
+
+                            <td nz-td>{{data.totalMoney}}元</td>
+                            <td nz-td>{{data.lessMoney}}元</td>
+                            <td nz-td>
+                                {{data.Parent?data.Parent.Nickname:""}}
+                            </td>
+                            <!-- <td nz-td>{{data.CreateDt }}</td> -->
+                            <td nz-td>{{data.CreateDt | date:'yyyy-MM-dd hh:mm'}}</td>
+                            <td nz-td>
+                                <!-- <a (click)="activeProduct(data._id)"> 上架</a> -->
+                                <!-- <a (click)="unactiveProduct(data._id)">下架</a> -->
+                                <a (click)="selectedProduct=data;modifyModalVisible=true">编辑</a>
+                                <a (click)="selectedFenxaioUser=data;manageParentVisible=true">设置上级</a>
+                            </td>
+                        </tr>
+                    </tbody>
+                </nz-table>
+
+            </ng-template>
+        </nz-card>
+    </div>
+</div>
+
+<ng-container *ngIf="selectedFenxaioUser">
+    <!-- 管理用户上下级 -->
+    <nz-modal [nzVisible]="manageParentVisible" [nzTitle]="'添加产品'" [nzContent]="modalContent" (nzOnCancel)="manageParentVisible=false;" [nzWidth]="800" (nzOnOk)="manageParentVisible=false;listFenxiaoUsers($event)">
+        <ng-template #modalContent>
+            <nz-table #nzTable [nzDataSource]="allFenxiaoUsers" [nzPageSize]="10" (nzDataChange)="_displayDataChange($event)" (nzPageIndexChange)="_refreshStatus()" (nzPageSizeChange)="_refreshStatus()">
+                <thead nz-thead>
+                    <tr>
+                        <!-- <th nz-th nzCheckbox>
+            <label nz-checkbox [(ngModel)]="_allChecked" [nzIndeterminate]="_indeterminate" (ngModelChange)="_checkAll($event)">
+            </label>
+          </th> -->
+                        <th nz-th>
+                            <span>Id</span>
+                        </th>
+                        <th nz-th>昵称</th>
+                        <th nz-th>
+                            手机号
+                        </th>
+
+                        <th nz-th>
+                            <span>上级</span>
+                        </th>
+                        <th nz-th>
+                            <span>创建时间</span>
+                        </th>
+                        <th nz-th>
+                            <span>操作</span>
+                        </th>
+                    </tr>
+                </thead>
+                <tbody nz-tbody>
+                    <ng-container *ngFor="let data of nzTable.data">
+                        <tr nz-tbody-tr *ngIf="data._id != selectedFenxaioUser._id">
+                            <td nz-td>{{data._id}}</td>
+                            <td nz-td>{{data.Nickname}}</td>
+                            <td nz-td>{{data.Phone}}</td>
+                            <td nz-td>{{data.CreateDt | date:"yyyy-MM-dd hh:mm"}}</td>
+                            <td nz-td>{{data.Parent}}</td>
+                            <td>
+                                <nz-popconfirm [nzTitle]="'确定设置为用户'+selectedFenxaioUser.Nickname+'的上级吗'" (nzOnConfirm)="chooseParent(data._id)">
+                                    <a nz-popconfirm>作为上级</a>
+                                </nz-popconfirm>
+                            </td>
+                        </tr>
+                    </ng-container>
+                </tbody>
+            </nz-table>
+            <nz-popconfirm>
+                <button nz-button [nzType]="'primary'" nz-popconfirm>
+            <span>清除上级</span>
+          </button>
+            </nz-popconfirm>
+        </ng-template>
+    </nz-modal>
+</ng-container>
+
+
+
+<!-- 编辑产品  
+<ng-container *ngIf="!!selectedProduct">
+  <nz-modal [nzVisible]="modifyModalVisible" [nzTitle]="'添加产品'" [nzContent]="modalContent" (nzOnCancel)="modifyModalVisible=false;"
+    (nzOnOk)="modifyModalVisible=false;modifyProduct($event)">
+    <ng-template #modalContent>
+
+      <div class="field">
+        <label class="label"> 产品名字</label>
+        <nz-input [(ngModel)]="selectedProduct.name"></nz-input>
+      </div>
+      <div class="field">
+        <label class="label"> 描述</label>
+        <nz-input [(ngModel)]="selectedProduct.summary" [nzType]="'textarea'"></nz-input>
+      </div>
+      <div class="field">
+        <label class="label"> 价格 ￥(.00)</label>
+        <nz-input [(ngModel)]="selectedProduct.price" [nzType]="'number'"></nz-input>
+      </div>
+      <div class="field">
+        <label class="label"> 折扣 (%)</label>
+        <nz-input nz-col [nzSpan]="12" nzHasFeedback [(ngModel)]="selectedProduct.discount" [nzType]="'number'"></nz-input>
+        <!-- <div nz-form-label nz-col [nzSpan]="5"> -->
+<!-- <label>%</label> -->
+<!-- </div> --
+      </div>
+      <div class="field">
+        <label class="label"> 计量单位</label>
+        <nz-input nz-col [nzSpan]="12" nzHasFeedback [(ngModel)]="selectedProduct.unit"></nz-input>
+        <!-- <div nz-form-label nz-col [nzSpan]="5"> -->
+<!-- <label>%</label> -->
+<!-- </div> --
+      </div>
+      <div class="field">
+        <label class="label"> 积分购买限制 0为无需积分,10000为 10000元购买起步</label>
+        <nz-input nz-col [nzSpan]="12" nzHasFeedback [(ngModel)]="selectedProduct.minScore" [nzType]="'number'"></nz-input>
+      </div>
+      <div class="field">
+        <label>产品图片组</label>
+        <div>
+          <figure (click)="modifyProductImages()">
+            <img src="/assets/images/upload-image.png" alt="">
+          </figure>
+
+          <figure *ngFor="let image of selectedProduct.images" style="max-width:45%;display:inline-block;">
+            <img [src]="image" style="max-width:100%;max-height:100%;" alt="">
+          </figure>
+        </div>
+      </div>
+    </ng-template>
+  </nz-modal>
+</ng-container>
+<!--  -->
