@@ -8,8 +8,9 @@ import { ConfigService } from "../../lib";
 export class HomePageComponent implements OnInit {
   isCollapsed = false;
   admin: any;
+
   sendProductOrdersNum: number = 0;
-  constructor(public config: ConfigService) {}
+  constructor(public config: ConfigService) { }
 
   async ngOnInit() {
     await this.getAdminInfo();
@@ -23,6 +24,7 @@ export class HomePageComponent implements OnInit {
     }
   }
   async getSendProductOrdersNum() {
+
     this.sendProductOrdersNum = await this.config.fruit.getSendProductOrdersNum();
   }
 

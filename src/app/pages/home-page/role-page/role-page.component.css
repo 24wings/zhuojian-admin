@@ -1,0 +1,9 @@
+[nz-button] {
+    padding: 15px 60px !important;
+    margin-bottom: 0px;
+    height: auto !important;
+}
+
+nz-button-group [nz-button] {
+    margin-right: 0;
+}

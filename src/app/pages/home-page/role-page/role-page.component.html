@@ -1,0 +1,24 @@
+<nz-breadcrumb style="margin:12px 0;">
+    <nz-breadcrumb-item><a> 系统管理</a></nz-breadcrumb-item>
+    <nz-breadcrumb-item><a routerLink="/admin/system/role"> 角色管理</a></nz-breadcrumb-item>
+</nz-breadcrumb>
+
+
+
+<div style="background:#fff;padding:30px">
+    <div style="border: 1px dotted darkgrey;margin-top:40px;padding:15px;" *ngFor="let group of groupOptions">
+        <div style="border-bottom: 1px solid rgb(233, 233, 233);padding-bottom: 10px;">
+            <label nz-checkbox [(ngModel)]="group.checkAll" (ngModelChange)="updateAllChecked(group)" [nzIndeterminate]="group.indeterminate">
+              {{group.name}}
+          </label>
+        </div>
+        <br>
+        <nz-checkbox-group [(ngModel)]="group.children" (ngModelChange)="updateSingleChecked(group)"></nz-checkbox-group>
+    </div>
+
+    <nz-button-group [nzSize]="'large'" class="flex-center" style="margin-top:40px;">
+        <button nz-button nzType="primary">保存</button>
+        <button nz-button nzType="dashed" nzSize="large" (click)="reset()"> 还原</button>
+        <button nzSize="'large'" nz-button>返回</button>
+    </nz-button-group>
+</div>

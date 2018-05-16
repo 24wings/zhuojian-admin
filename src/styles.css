@@ -1,20 +1,21 @@
 /* You can add global styles to this file, and also import other style files */
 
+@import '//at.alicdn.com/t/font_669345_kgj441amzdezsemi.css';
 .text-center {
-  text-align: center;
+    text-align: center;
 }
 
 .min-card .ant-card-body {
-  min-height: 350px;
+    min-height: 350px;
 }
 
 .gray {
-  color: lightgray;
+    color: lightgray;
 }
 
 * {
-  margin: 0;
-  padding: 0;
+    margin: 0;
+    padding: 0;
 }
 
 ul li,
@@ -22,14 +23,20 @@ ol li,
 ul,
 ol,
 li {
-  list-style: none;
+    list-style: none;
 }
 
 .ant-menu-item-selected {
-  background: #3399ff !important;
+    background: #3399ff !important;
 }
 
 #nz-card {
-  font-size: .9rem;
-  line-height: 2.5rem;
+    font-size: .9rem;
+    line-height: 2.5rem;
+}
+
+.flex-center {
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
