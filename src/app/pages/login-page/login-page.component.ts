@@ -15,7 +15,7 @@ export class LoginPageComponent implements OnInit {
     private fb: FormBuilder,
     public pcClient: PcClientService,
     public router: Router
-  ) {}
+  ) { }
 
   ngOnInit() {
     this.validateForm = this.fb.group({
@@ -28,7 +28,7 @@ export class LoginPageComponent implements OnInit {
     let result = await this.pcClient.login(this.shop_id, this.password);
     console.log(result);
     if (result) {
-      localStorage.setItem("shop_id", this.shop_id);
+      localStorage.setItem("shop_id", result.shop_id);
       this.router.navigateByUrl("/admin");
     }
   }

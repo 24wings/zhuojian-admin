@@ -29,8 +29,7 @@ import { LocationComponent } from "./com/location/location.component";
 import { RestService } from "./service/rest.service";
 import { BangweiTestService } from "./service/bangwei-test.service";
 import { MyHttpService } from "./service/http.service";
-// import { FormListComponent } from './com/form-list/form-list.component';
-
+import { StorageService } from './service/storage.service';
 @NgModule({
   imports: [
     // BrowserModule,
@@ -83,7 +82,8 @@ import { MyHttpService } from "./service/http.service";
     FxService,
     ShopClientService,
     BangweiTestService,
-    MyHttpService
+    MyHttpService,
+    StorageService
   ]
 })
 export class LibModule {
@@ -107,7 +107,8 @@ export class LibModule {
         FxService,
         BangweiTestService,
         PcClientService,
-        MyHttpService
+        MyHttpService,
+        StorageService
       ]
     };
   }

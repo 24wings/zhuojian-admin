@@ -10,29 +10,39 @@
         <ul nz-menu [nzMode]="'inline'" nzTheme='dark' [nzInlineCollapsed]="isCollapsed">
             <li nz-submenu>
                 <span title>
-         
-                  <i  class=" anticon iconfont icon-guanliyuan1" style="margin-right: 8px"></i> <span>系统管理</span>
+
+          <i class=" anticon iconfont icon-guanliyuan1" style="margin-right: 8px"></i>
+          <span>系统管理</span>
                 </span>
                 <ul>
-                    <li nz-menu-item routerLink="/admin/system/role" routerLinkActive="ant-menu-item-selected"> <i class="icon-guanliyuan iconfont"></i> 角色管理</li>
-                    <li nz-menu-item routerLink="/admin/system/subject" routerLinkActive="ant-menu-item-selected"> <i class="icon-fenlei iconfont"></i> 栏目管理</li>
-                    <li nz-menu-item routerLink="/admin/system/manager" routerLinkActive="ant-menu-item-selected"><i class="icon-renshiguanli iconfont"></i>管理人员</li>
+                    <!-- <li nz-menu-item routerLink="/admin/system/role" routerLinkActive="ant-menu-item-selected"> -->
+                    <!-- <i class="icon-guanliyuan iconfont"></i> 角色管理</li> -->
+                    <!-- <li nz-menu-item routerLink="/admin/system/module" routerLinkActive="ant-menu-item-selected"> -->
+                    <!-- <i class="icon-fenlei iconfont"></i> 栏目管理</li> -->
+                    <!-- <li nz-menu-item routerLink="/admin/system/manager" routerLinkActive="ant-menu-item-selected"> -->
+                    <!-- <i class="icon-renshiguanli iconfont"></i>管理人员</li> -->
+                    <li nz-menu-item routerLink="/admin/system/material" routerLinkActive="ant-menu-item-selected">
+                        <i class="icon-renshiguanli iconfont"></i>素材管理</li>
+
                 </ul>
             </li>
         </ul>
-        <ul nz-menu [nzMode]="'inline'" nzTheme='dark' [nzInlineCollapsed]="isCollapsed">
+        <!-- <ul nz-menu [nzMode]="'inline'" nzTheme='dark' [nzInlineCollapsed]="isCollapsed">
             <li nz-submenu>
                 <span title>
-        <i class="anticon anticon-appstore"></i>
-        <span>系统参数</span>
+          <i class="anticon anticon-appstore"></i>
+          <span>系统参数</span>
                 </span>
                 <ul>
-                    <li nz-menu-item><i class="iconfont icon-77"></i> 城市列表</li>
-                    <li nz-menu-item><i class="icon-xingye iconfont"></i> 行业列表</li>
-                    <li nz-menu-item><i class="icon-zhiye iconfont"></i> 职业列表</li>
+                    <li nz-menu-item>
+                        <i class="iconfont icon-77"></i> 城市列表</li>
+                    <li nz-menu-item>
+                        <i class="icon-xingye iconfont"></i> 行业列表</li>
+                    <li nz-menu-item>
+                        <i class="icon-zhiye iconfont"></i> 职业列表</li>
                 </ul>
             </li>
-        </ul>
+        </ul> -->
 
 
 
@@ -58,11 +68,11 @@
                     <ul nz-menu [nzMode]="'horizontal'">
                         <li nz-submenu>
                             <span title>
-                <i class="anticon anticon-setting"></i> 你好，刺月无影</span>
+                <i class="anticon anticon-setting"></i> 你好，系统管理员</span>
                             <ul>
 
-                                <li nz-menu-group>
-                                    <span title (click)="logout()">登出</span>
+                                <li nz-menu-group (click)="logout()">
+                                    <span title>登出</span>
 
                                 </li>
                             </ul>

@@ -30,6 +30,7 @@ export class HomePageComponent implements OnInit {
 
   async logout() {
     // await this.config.fruit.adminLogout();
+    localStorage.clear();
     this.config.router.navigateByUrl("/admin/login");
     // window.location.reload();
   }

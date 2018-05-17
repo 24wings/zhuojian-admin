@@ -6,7 +6,7 @@ export class CommonService {
   defaultUserAvatar = "/assets/images/123.jpg";
   private commonApi = {
     getQrcode: "/common/qrcode",
-    uploadImage: "/common/image"
+    uploadImage: "/common/upload/image"
   };
   /**
   .get("/common/qrcode", common.getQrcode)
@@ -20,7 +20,7 @@ export class CommonService {
   getQrcode(url) {
     return this.http.Get(this.commonApi.getQrcode, { params: { url } });
   }
-  uploadImage(base64: string) {
+  uploadImage(base64: string): Promise<any> {
     return this.http.Post(this.commonApi.uploadImage, { base64 });
   }
 

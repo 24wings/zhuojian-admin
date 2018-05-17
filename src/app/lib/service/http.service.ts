@@ -22,7 +22,7 @@ export class MyHttpService {
         if (result.ok) {
           return result.data;
         } else {
-          return this.createMessage("error", result.data);
+          return this.createMessage("error", result.data) && false;
         }
       });
   }
@@ -37,7 +37,7 @@ export class MyHttpService {
         let result = rtn.json();
         return result.ok
           ? result.data
-          : this.createMessage("error", result.data);
+          : this.createMessage("error", result.data) && false;
       });
   }
 
@@ -72,5 +72,5 @@ export class MyHttpService {
   createMessage(type: "error" | "success" | "warning", text) {
     return this._message.create(type, `这是一条${text}提示`);
   }
-  constructor(public http: Http, private _message: NzMessageService) {}
+  constructor(public http: Http, private _message: NzMessageService) { }
 }

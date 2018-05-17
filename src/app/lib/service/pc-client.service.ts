@@ -13,7 +13,9 @@ export class PcClientService {
   pcClientApi = {
     login: "/pc/login",
     listMaterials: "/pc/list-shop-materials",
-    createMaterial: "/create-material"
+    createMaterial: "/create-material",
+    uploadImage: "/common/upload/image",
+    listCouponAndMaterialByShopId: '/pc/list-coupin-and-material-by-shop_id'
   };
   /**
    * 
@@ -32,6 +34,9 @@ export class PcClientService {
     .get("/pc/get-tickets-by-keyword", home.getTciketsByKeyword);
    * 
    */
+  listCouponAndMaterialByShopId() {
+    return this.http.Get(this.pcClientApi.listCouponAndMaterialByShopId, { params: { shop_id: this.shop_id } })
+  }
 
   /** base64数据 */
   url2Qrcode(url: string): Promise<string> {
@@ -45,16 +50,18 @@ export class PcClientService {
   async getAuthCode(phone: string) {
     return await this.http.Post("/sale.signupAuthCode.go", { phone });
   }
-  async listMaterials() {
+  async listMaterials(page: number = 0, size: number = 10) {
     return this.http.Get(this.pcClientApi.listMaterials, {
-      params: { shop_id: this.shop_id }
+      params: { shop_id: this.shop_id, page, size }
     });
   }
   async createMaterial(material: IMaterial) {
-    return this.http.Post(this.pcClientApi.createMaterial, material, {
-      params: { shop_id: this.shop_id }
-    });
+    material.shopuser_id = this.shop_id as any;
+    return this.http.Post(this.pcClientApi.createMaterial, material, {});
+  }
+  async uploadBase64(base64: string) {
+    return this.http.Post(this.pcClientApi.uploadImage, { base64 });
   }
 
-  constructor(public http: MyHttpService) {}
+  constructor(public http: MyHttpService) { }
 }

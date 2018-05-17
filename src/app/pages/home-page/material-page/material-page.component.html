@@ -1,0 +1,102 @@
+<nz-breadcrumb style="margin:12px 0;">
+    <nz-breadcrumb-item>
+        <a> 系统管理</a>
+    </nz-breadcrumb-item>
+    <nz-breadcrumb-item>
+        <a routerLink="/admin/system/material"> 素材管理</a>
+    </nz-breadcrumb-item>
+</nz-breadcrumb>
+
+
+<div style="background:#fff;padding:30px">
+    <div class="table-operations">
+        <!-- <button nz-button ngType="primary" (click)="showPublishModal=true">发布活动</button> -->
+        <!-- <button nz-button >Clear filters</button> -->
+        <!-- <button nz-button (click)="resetSortAndFilters()">Clear filters and sorters</button> -->
+    </div>
+    <nz-table #ajaxTable nzShowSizeChanger [nzDataSource]="dataSet" [nzLoading]="loading" [nzTotal]="total" [(nzPageIndex)]="pageIndex" [(nzPageSize)]="pageSize" (nzPageIndexChange)="searchData()" (nzPageSizeChange)="searchData(true)">
+        <thead nzSingleSort>
+            <tr>
+                <th nzShowSort nzSortKey="name">活动id</th>
+                <!-- <th nzShowFilter>活动标题</th> -->
+                <th nzShowSort nzSortKey="email">
+                    <span>素材前台图片</span>
+                </th>
+                <th nzShowSort nzSortKey="email">
+                    <span>素材活动图片</span>
+                </th>
+                <th nzShowSort nzSortKey="email">
+                    <span>Logo/微信分享图片</span>
+                </th>
+                <th nzShowSort nzSortKey="email">
+                    <span>是否可注册获得</span>
+                </th>
+                <th nzShowSort nzSortKey="email">
+                    <span>是否可分享获得</span>
+                </th>
+                <th nzShowSort nzSortKey="email">
+                    <span>是否可赠与他人</span>
+                </th>
+                <th>店铺座机</th>
+                <th>操作</th>
+
+            </tr>
+        </thead>
+        <tbody>
+            <tr *ngFor="let data of ajaxTable.data">
+                <td>{{data.id}}</td>
+                <td>
+                    <img [src]="data.home_image_url" alt="">
+                </td>
+                <td>
+                    <img [src]="data.ticket_image_url" alt="">
+                </td>
+                <td>
+                    <img [src]="data.share_image_url" alt="">
+                </td>
+                <td>{{data.reg_give?'是':'否'}}</td>
+                <td>{{data.can_share?'是':'否'}}</td>
+                <td>{{data.can_give_other?'是':'否'}}</td>
+                <td>{{data.shop_phone}}</td>
+                <td><button nz-button nzType="primary" (click)="selectedMaterial=data; showPublishModal=true;">修改活动资料</button> </td>
+            </tr>
+        </tbody>
+    </nz-table>
+</div>
+
+
+
+<nz-modal [(nzVisible)]="showPublishModal" [nzContent]="modalContent" nzTitle="创建素材" (nzOnCancel)="showPublishModal=false" (nzOnOk)="createMaterial();showPublishModal=false;">
+    <ng-template #modalContent>
+        <ng-container *ngIf="selectedMaterial">
+
+            <br>
+
+
+
+            <nz-upload class="avatar-uploader" nzName="avatar" nzListType="picture-card" [nzShowUploadList]="false" [nzBeforeUpload]="beforeUpload" (nzChange)="handleChange($event,1)">
+                <ng-container *ngIf="!selectedMaterial.home_image_url">
+                    <i class="anticon anticon-plus"></i>
+                    <div class="ant-upload-text">上传首页图片</div>
+                </ng-container>
+                <img *ngIf="selectedMaterial.home_image_url" [src]="selectedMaterial.home_image_url" class="avatar">
+            </nz-upload>
+
+            <nz-upload class="avatar-uploader" nzName="avatar" nzListType="picture-card" [nzShowUploadList]="false" [nzBeforeUpload]="beforeUpload" (nzChange)="handleChange($event,2)">
+                <ng-container *ngIf="!selectedMaterial.ticket_image_url">
+                    <i class="anticon anticon-plus"></i>
+                    <div class="ant-upload-text">上传详情图片</div>
+                </ng-container>
+                <img *ngIf="selectedMaterial.ticket_image_url" [src]="selectedMaterial.ticket_image_url" class="avatar">
+            </nz-upload>
+            <nz-upload class="avatar-uploader" nzAction="https://jsonplaceholder.typicode.com/posts/" nzName="avatar" nzListType="picture-card" [nzShowUploadList]="false" [nzBeforeUpload]="beforeUpload" (nzChange)="handleChange($event,3)">
+                <ng-container *ngIf="!selectedMaterial.share_image_url">
+                    <i class="anticon anticon-plus"></i>
+                    <div class="ant-upload-text">上传分享图片</div>
+                </ng-container>
+                <img *ngIf="selectedMaterial.share_image_url" [src]="selectedMaterial.share_image_url" class="avatar">
+            </nz-upload>
+            <br>
+        </ng-container>
+    </ng-template>
+</nz-modal>

@@ -264,3 +264,9 @@ interface IMaterial {
   can_share?: boolean;
   can_give_other?: boolean;
 }
+
+
+interface IUser {
+  username: string;
+  password: string;
+}

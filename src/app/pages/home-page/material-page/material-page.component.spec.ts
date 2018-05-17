@@ -1,20 +1,20 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { OrderDetailPageComponent } from './order-detail-page.component';
+import { MaterialPageComponent } from './material-page.component';
 
-describe('OrderDetailPageComponent', () => {
-  let component: OrderDetailPageComponent;
-  let fixture: ComponentFixture<OrderDetailPageComponent>;
+describe('MaterialPageComponent', () => {
+  let component: MaterialPageComponent;
+  let fixture: ComponentFixture<MaterialPageComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ OrderDetailPageComponent ]
+      declarations: [ MaterialPageComponent ]
     })
     .compileComponents();
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(OrderDetailPageComponent);
+    fixture = TestBed.createComponent(MaterialPageComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });
